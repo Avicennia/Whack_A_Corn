@@ -7,11 +7,10 @@ minetest.register_craftitem("wae:warrhammer",{
 	inventory_image = "maultest.png",
 	wield_image = "maultest.png",
 	on_use = function(itemstack, user, pointed_thing)
+		if(pointed_thing.under ~= nil)then
 		wae.eggsmash(user, pointed_thing, itemstack)
-		if(pointed_thing.under == nil)then
-		else
 		wae.tumbleparticles(pointed_thing.under,"code_warr.png")
-		end
+		else end
 	end,
 	on_secondary_use = function()
 	end

@@ -43,7 +43,7 @@ wae.dimond_focused_lazer = function(pos,tex)
 		maxsize = 40,
 		collisiondetection = false,
 		collision_removal = false,
-		vertical = false,
+		vertical = true,
 		texture = tex,
 		glow = 2
 	})
@@ -121,5 +121,35 @@ wae.eggsmash = function(user, pointed_thing, itemstack)
 		pmeta:set_int("score",pmeta:get_int("score")+math.random(1,6))
 		minetest.chat_send_all(pmeta:get_int("score"))
 	end
+	if(minetest.get_item_group(noi.name, "eggy") >= 1) then
 	minetest.set_node(pointed_thing.under, {name = "wae:smashed_egg"})
+	else end
+end
+
+wae.boundchk = function(names)
+	-- ^ Function to check for players that meet criteria to be considered "present" in the play area.
+	-- Two tables, one to store positions of players, and one to store the name of the node beneath them;
+	-- players that have [wae:resigned_grass] beneath them, under typical circumstances should only be those in
+	-- an ongoing game or playfield, as this node is intended only to be spawned in for the playfield.
+	local post = {}
+	local post_nunder = {}
+	local nb = {}
+	for _,v in ipairs(names)do 
+		-- Not explicitly visible here is that names and positions should be synchronized
+		-- with the numerical order of the array storing player names upon login in [init.lua]. 
+		local vp = minetest.get_player_by_name(v):get_pos()
+		local e = minetest.get_node({x=vp.x,y=vp.y-1,z=vp.z}).name
+		table.insert(post,vp)
+		table.insert(post_nunder,e)
+	end
+	minetest.chat_send_all(minetest.serialize(post))
+	minetest.chat_send_all(minetest.serialize(post_nunder))
+	for n = 1, #wae.playurns, 1 do
+		if(post_nunder[n] == "wae:resigned_grass")then
+				table.insert(nb,n)
+				table.insert(nb,wae.playurns[n])
+			else
+		end
+	end
+	return nb
 end

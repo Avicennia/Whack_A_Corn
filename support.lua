@@ -9,10 +9,9 @@ minetest.register_abm({
 	chance = 100,
 	action = function(pos, node)
 		local n = math.random(1,10);
-		if(n >= 6)then
+		if(n >= 1)then
 		minetest.punch_node(pos)
-		elseif(minetest.get_node({{x=pos.x,y=pos.y+1,z=pos.z}}).name == "air")then 
-			minetest.remove_node({x=pos.x,y=pos.y+1,z=pos.z})
+		else
 		end
 		if(minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name == "wae:victorious_eggcorn")then
 			minetest.remove_node({x=pos.x,y=pos.y+1,z=pos.z})
@@ -38,16 +37,12 @@ minetest.register_abm({
 
 })
 minetest.register_abm({
-	label = "The Cycle of Egg and Corn Continues Yet again",
-	nodenames = {"group:eggy"},
-	interval = 0.5,
-	chance = 50,
+	label = "Poof away all the mess",
+	nodenames = {"wae:sadistic_eggcorn"},
+	interval = 1.0,
+	chance = 1,
 	action = function(pos, node)
-		local n = math.random(1,10);
-		if(n >= 2)then
-		minetest.punch_node({x=pos.x,y=pos.y+1,z=pos.z})
-		else
-		end
+		minetest.chat_send_all(minetest.serialize(wae.boundchk(wae.playurns)))
 	end
 
 })
@@ -61,19 +56,7 @@ minetest.register_abm({
 	end
 
 })
---[[minetest.register_abm({
-	label = "Fake Construction temp ABM",
-	nodenames = {"wae:resigned_grass"},
-	interval = 3.0,
-	chance = 0.5,
-	action = function(pos, node)
-		if(minetest.get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == "air")then
-			minetest.set_node({x=pos.x+1,y=pos.y,z=pos.z},{name = "wae:resigned_grass"})
-		else minetest.chat_send_all("?")
-		end
-	end
 
-})]]
 
 minetest.register_chatcommand("ckscore",
 	{
@@ -93,5 +76,14 @@ minetest.register_chatcommand("ckscore",
 				end
 			return true
 			end
+	}
+)
+minetest.register_chatcommand("ckattends",
+	{
+		description = "Check current attendees", 
+		privs = {interact=true},
+		func = function(name, param)
+			minetest.chat_send_all(minetest.serialize(wae.attends))
+		end
 	}
 )
