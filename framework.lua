@@ -69,6 +69,7 @@ wae.tumbleparticles = function(pos,tex)
 		glow = 2
 	})
 end
+
 wae.eggeffect_entomb = function(name, dur)
 	local pos = minetest.get_player_by_name(name):get_pos()
 	local airfield = minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "air"})
@@ -77,7 +78,8 @@ wae.eggeffect_entomb = function(name, dur)
 	end
 	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "default:stone"})) do 
 	minetest.remove_node(v)end end)
-	end
+end
+
 wae.eggeffect_deluge = function(name, dur)
 	local pos = minetest.get_player_by_name(name):get_pos()
 	local airfield = minetest.find_nodes_in_area({x=pos.x,y=pos.y+4,z=pos.z},{x=pos.x,y=pos.y+3,z=pos.z},{name = "air"})
@@ -86,7 +88,8 @@ wae.eggeffect_deluge = function(name, dur)
 	end
 	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+5,z=pos.z+1},{name = "default:water_source"})) do 
 	minetest.remove_node(v)end end)
-	end
+end
+
 wae.bookban = function(tab,node)
 	
 end
@@ -144,12 +147,33 @@ wae.boundchk = function(names)
 	end
 	minetest.chat_send_all(minetest.serialize(post))
 	minetest.chat_send_all(minetest.serialize(post_nunder))
-	for n = 1, #wae.playurns, 1 do
+	for n = 1, #names, 1 do
 		if(post_nunder[n] == "wae:resigned_grass")then
 				table.insert(nb,n)
-				table.insert(nb,wae.playurns[n])
+				table.insert(nb,names[n])
 			else
 		end
 	end
-	return nb
+	return nb -- Returns a table containing an index and name for every player with [wae:resigned_grass] under their feet.
+end
+wae.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to every value indexed in table <tab>.
+	local tablerv = {}
+	for n=2, #tab, 2 do
+		if(name == table[n])then 
+			table.insert(tablerv,true)
+		else table.insert(tablerv,false)
+		end
+	end
+	return tablerv
+end
+wae.nameiter_ver = function(tab)
+	local first = 0
+	local second = 0
+	local third = 0
+	local fourth = 0
+	local fifth = 0
+	local sixth = 0
+	for n = 1, #tab, 1 do
+		if(tab[1] == )
+
 end

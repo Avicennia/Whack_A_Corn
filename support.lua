@@ -37,12 +37,24 @@ minetest.register_abm({
 
 })
 minetest.register_abm({
-	label = "Poof away all the mess",
+	label = "Kill them! Kill them All!",
 	nodenames = {"wae:sadistic_eggcorn"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node)
-		minetest.chat_send_all(minetest.serialize(wae.boundchk(wae.playurns)))
+		local bchkrv = wae.boundchk(wae.playurns)
+		minetest.chat_send_all(minetest.serialize(bchkrv))
+		if(#wae.attends == 0)then
+			for n=2, #bchkrv, 2 do
+				table.insert(wae.attends,bchkrv[n])
+			end
+		else if(#wae.attends == #bchkrv/2)then
+			for n=2, #bchkrv, 2 do
+				wae.nameiter(wae.attends[n],bchkrv)
+				
+			end
+		end 
+	end	
 	end
 
 })
@@ -63,17 +75,12 @@ minetest.register_chatcommand("ckscore",
 		description = "Check player scores", 
 		privs = {interact=true},
 		func = function(name, param)
-			local pobjlist = minetest.get_connected_players()
-			local namelist = {}
-			local sclist = {}
-			for k,v in pairs(pobjlist) do 
-				table.insert(namelist,v:get_player_name())
+			for _,v in ipairs(wae.attends)do
+				local pmeta = v and minetest.get_player_by_name(v):get_meta()
+				minetest.chat_send_player(name,v)
+				minetest.chat_send_player(name,pmeta:get_int("score"))
 			end
-			for k,v in ipairs(namelist) do  
-				minetest.chat_send_all(namelist[k])
-				local pmeta = minetest.get_player_by_name(namelist[k]):get_meta()
-				minetest.chat_send_all(pmeta:get_int("score"))
-				end
+
 			return true
 			end
 	}

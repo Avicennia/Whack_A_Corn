@@ -4,7 +4,7 @@ wae_s = minetest.get_mod_storage()
 wae = {}
 wae.quirks = {"simple","melancholy","cheerful","petrified","myscus","victorious","fruity"}
 wae.playurns = {}
-wae.attend = {}
+wae.attends = {}
 wae.game_create = function(pos)
     minetest.place_schematic({x=pos.x-23,y=pos.y,z=pos.z-23},wae.thefield,"0",_,true,_)
 end
