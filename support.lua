@@ -54,6 +54,7 @@ minetest.register_abm({
 				
 			end
 		end 
+		minetest.chat_send_all(minetest.serialize(wae.nameiter_ver(wae.nameiter("singleplayer",bchkrv))))
 	end	
 	end
 

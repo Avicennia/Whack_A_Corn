@@ -167,13 +167,26 @@ wae.nameiter = function(name,tab) -- Returns a table of BOOL values after compar
 	return tablerv
 end
 wae.nameiter_ver = function(tab)
-	local first = 0
-	local second = 0
-	local third = 0
-	local fourth = 0
-	local fifth = 0
-	local sixth = 0
+	local sig = 0
 	for n = 1, #tab, 1 do
-		if(tab[1] == )
+		if(tab[1] == false and tab[2] == false and tab[3] == false and tab[4] == false) then
+			sig = 0
+		elseif(tab[1] == true and tab[2] == true and tab[3] == true and tab[4] == true) then
+			sig = 5
+		elseif(tab[1] == true and tab[2] == false and tab[3] == false and tab[4] == false) then
+			sig = 1
+		elseif(tab[1] == false and tab[2] == true and tab[3] == false and tab[4] == false) then
+			sig = 2
+		elseif(tab[1] == false and tab[2] == false and tab[3] == true and tab[4] == false) then
+			sig = 3
+		elseif(tab[1] == false and tab[2] == false and tab[3] == false and tab[4] == true) then
+			sig = 4
+		else sig = nil 
+		end
+	end
+	return sig
+
+
+			
 
 end
