@@ -145,8 +145,8 @@ wae.boundchk = function(names)
 		table.insert(post,vp)
 		table.insert(post_nunder,e)
 	end
-	minetest.chat_send_all(minetest.serialize(post))
-	minetest.chat_send_all(minetest.serialize(post_nunder))
+	--minetest.chat_send_all(minetest.serialize(post))
+	--minetest.chat_send_all(minetest.serialize(post_nunder))
 	for n = 1, #names, 1 do
 		if(post_nunder[n] == "wae:resigned_grass")then
 				table.insert(nb,n)
@@ -159,34 +159,39 @@ end
 wae.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to every value indexed in table <tab>.
 	local tablerv = {}
 	for n=2, #tab, 2 do
-		if(name == table[n])then 
+		if(tab[n] == name)then 
 			table.insert(tablerv,true)
 		else table.insert(tablerv,false)
 		end
 	end
 	return tablerv
 end
-wae.nameiter_ver = function(tab)
-	local sig = 0
-	for n = 1, #tab, 1 do
-		if(tab[1] == false and tab[2] == false and tab[3] == false and tab[4] == false) then
-			sig = 0
-		elseif(tab[1] == true and tab[2] == true and tab[3] == true and tab[4] == true) then
-			sig = 5
-		elseif(tab[1] == true and tab[2] == false and tab[3] == false and tab[4] == false) then
-			sig = 1
-		elseif(tab[1] == false and tab[2] == true and tab[3] == false and tab[4] == false) then
-			sig = 2
-		elseif(tab[1] == false and tab[2] == false and tab[3] == true and tab[4] == false) then
-			sig = 3
-		elseif(tab[1] == false and tab[2] == false and tab[3] == false and tab[4] == true) then
-			sig = 4
-		else sig = nil 
+wae.tabcomp = function(tl,td)
+	local rv = 0 -- 
+	if(#td/2 == #tl)then
+		rv = "equal"
+	elseif(#td/2 > #tl)then
+		rv = "larger"
+	elseif(#td/2 < #tl)then
+		rv = "smaller"
+	else rv[1] = "und" end
+return rv 
+end
+wae.tappend = function(tl,td)
+	for n=2, #td, 2 do
+		table.insert(tl,td[n])
+	end
+end
+wae.tabtfchk = function(tab)
+	local numtab = {}
+	for n=1, #tab, 1 do
+		if(tab[n] == true)then
+			table.insert(numtab,n)
+		else table.insert(numtab, 0)
 		end
 	end
-	return sig
-
-
-			
-
+	return numtab
 end
+
+
+

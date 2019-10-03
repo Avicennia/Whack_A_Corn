@@ -39,24 +39,16 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "Kill them! Kill them All!",
 	nodenames = {"wae:sadistic_eggcorn"},
-	interval = 1.0,
+	interval = 3.0,
 	chance = 1,
 	action = function(pos, node)
-		local bchkrv = wae.boundchk(wae.playurns)
-		minetest.chat_send_all(minetest.serialize(bchkrv))
-		if(#wae.attends == 0)then
-			for n=2, #bchkrv, 2 do
-				table.insert(wae.attends,bchkrv[n])
-			end
-		else if(#wae.attends == #bchkrv/2)then
-			for n=2, #bchkrv, 2 do
-				wae.nameiter(wae.attends[n],bchkrv)
-				
-			end
-		end 
-		minetest.chat_send_all(minetest.serialize(wae.nameiter_ver(wae.nameiter("singleplayer",bchkrv))))
-	end	
+	for k in ipairs(wae.playurns)do
+	minetest.chat_send_all(minetest.serialize(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns))))
+	minetest.chat_send_all(minetest.serialize(wae.tabcomp(wae.playurns,wae.boundchk(wae.playurns))))
+	minetest.chat_send_all(minetest.serialize(wae.tabtfchk(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns)))))
 	end
+	minetest.chat_send_all("--------------BLANK---------------")
+end
 
 })
 minetest.register_abm({
