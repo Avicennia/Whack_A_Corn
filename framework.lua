@@ -151,14 +151,19 @@ wae.boundchk = function(names)
 		if(post_nunder[n] == "wae:resigned_grass")then
 				table.insert(nb,n)
 				table.insert(nb,names[n])
-			else
+			else for k,v in ipairs(wae.attends)do
+				if(names[n] == v) then
+					table.remove(wae.attends, k)
+					minetest.chat_send_all("Player "..names[n].." went out of bounds!")
+				end
+			end
 		end
 	end
 	return nb -- Returns a table containing an index and name for every player with [wae:resigned_grass] under their feet.
 end
 wae.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to every value indexed in table <tab>.
 	local tablerv = {}
-	for n=2, #tab, 2 do
+	for n=1, #tab, 1 do
 		if(tab[n] == name)then 
 			table.insert(tablerv,true)
 		else table.insert(tablerv,false)
@@ -182,6 +187,17 @@ wae.tappend = function(tl,td)
 		table.insert(tl,td[n])
 	end
 end
+wae.ttris = function(tl,td)
+	n = 0
+	for k,v in ipairs(td) do	
+		if(v ~= tl[n] and type(v) == "string")then
+			n = n + 1
+			tl[n] = v 
+		else 
+		end
+	end
+end
+
 wae.tabtfchk = function(tab)
 	local numtab = {}
 	for n=1, #tab, 1 do
@@ -192,6 +208,28 @@ wae.tabtfchk = function(tab)
 	end
 	return numtab
 end
-
-
+function wae.dupchk(name,tab)
+	local rv = {name,0,"white"}
+	for _,v in ipairs(tab) do
+		if(v == name and rv[2] == 0)then
+			rv[2] = rv[2] + 1
+		elseif(v == name and rv[2] > 1)then 
+			rv[2] = rv[2] + 1; rv[3] = "yellow"
+		else 
+		end
+	end
+	return rv
+end
+function wae.duptrunc(tn,tl)
+	if(tn[2] > 1 and tn[3] == "yellow")then
+		for n = 1, tn[2]-1 do
+			for k,v in ipairs(tl)do
+				if(v == tn[1])then
+					table.remove(tl,k)
+					minetest.chat_send_all("Player "..tn[1].." duplicate name removed.")
+				end
+			end
+		end
+	end
+end
 

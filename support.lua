@@ -43,14 +43,24 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node)
 	for k in ipairs(wae.playurns)do
-	minetest.chat_send_all(minetest.serialize(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns))))
-	minetest.chat_send_all(minetest.serialize(wae.tabcomp(wae.playurns,wae.boundchk(wae.playurns))))
-	minetest.chat_send_all(minetest.serialize(wae.tabtfchk(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns)))))
+	--minetest.chat_send_all(minetest.serialize(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns))))
+	--minetest.chat_send_all(minetest.serialize(wae.tabcomp(wae.playurns,wae.boundchk(wae.playurns))))
+	--minetest.chat_send_all(minetest.serialize(wae.tabtfchk(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns)))))
 	end
+	
 	minetest.chat_send_all("--------------BLANK---------------")
-end
+	wae.boundchk(wae.playurns)
+	minetest.chat_send_all(minetest.serialize(wae.attends))
+	wae.ttris(wae.attends,wae.boundchk(wae.playurns))
+	minetest.chat_send_all(minetest.serialize(wae.attends))
+	for _,v in pairs(wae.attends)do
+	wae.duptrunc(wae.dupchk(v,wae.attends),wae.attends)
+	end
+	minetest.chat_send_all(minetest.serialize(wae.attends))
 
+end
 })
+
 minetest.register_abm({
 	label = "Poof away all the mess",
 	nodenames = {"group:eggy"},

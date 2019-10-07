@@ -12,7 +12,7 @@ end
 minetest.register_on_joinplayer(function(player)
     local n = player:get_player_name()
     table.insert(wae.playurns,n)
-    minetest.chat_send_all(minetest.serialize(wae.playurns))
+    --minetest.chat_send_all(minetest.serialize(wae.playurns))
 end)
 minetest.register_on_leaveplayer(function(player, timed_out)
     local nm = player:get_player_name()
