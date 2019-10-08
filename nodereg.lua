@@ -55,7 +55,12 @@ minetest.register_node("wae:resigned_grass",{
 	 end
 	end
 })
-
+minetest.register_node("wae:resigned_grass_inert",{
+	description = "Resigned Grass",
+	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
+	tiles = {"resigned_grass_top.png"},
+	groups = {pseudoeggy = 2}
+})
 minetest.register_node("wae:smashed_egg", {
 	description = "Smashed Eggcorn",
 	groups = {choppy = 1},
@@ -174,7 +179,15 @@ for n=1,7,1 do
 	end,
 	
 })end
-
+for n=1,7,1 do 
+	minetest.register_node("wae:"..wae.quirks[n].."_eggcorn_inert",{
+	description = wae.quirks[n].."Eggcorn",
+	drawtype = "plantlike",
+	tiles = {texas[n]},
+	paramtype = "light",
+	groups = {pseudoeggy = 4}
+	})
+end
 minetest.register_node("wae:dev", {
 		tiles = {
 			"nc_tree:log.png",

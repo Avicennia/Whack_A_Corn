@@ -37,7 +37,7 @@ minetest.register_abm({
 
 })
 minetest.register_abm({
-	label = "Kill them! Kill them All!",
+	label = "indicator",
 	nodenames = {"wae:sadistic_eggcorn"},
 	interval = 3.0,
 	chance = 1,
@@ -50,9 +50,7 @@ minetest.register_abm({
 	
 	minetest.chat_send_all("--------------BLANK---------------")
 	wae.boundchk(wae.playurns)
-	minetest.chat_send_all(minetest.serialize(wae.attends))
 	wae.ttris(wae.attends,wae.boundchk(wae.playurns))
-	minetest.chat_send_all(minetest.serialize(wae.attends))
 	for _,v in pairs(wae.attends)do
 	wae.duptrunc(wae.dupchk(v,wae.attends),wae.attends)
 	end
@@ -94,6 +92,52 @@ minetest.register_chatcommand("ckattends",
 		privs = {interact=true},
 		func = function(name, param)
 			minetest.chat_send_all(minetest.serialize(wae.attends))
+		end
+	}
+)
+minetest.register_chatcommand("score;rs;all",
+	{
+		description = "Sets all scores to zero", 
+		privs = {interact=true},
+		func = function(name, param)
+			minetest.chat_send_all("All scores reset!")
+			for _,v in pairs(wae.playurns)do
+				local player = minetest.get_player_by_name(v)
+				local pmeta = player:get_meta()
+				pmeta:set_int("score",0)
+			end
+		end
+	}
+)
+minetest.register_chatcommand("board;stop",
+	{
+		description = "Stops eggcorn spawning on board", 
+		privs = {interact=true},
+		func = function(name, param)
+			minetest.chat_send_all("Game Paused!")
+			local player = minetest.get_player_by_name(name)
+			local ppos = player:get_pos()
+			local stat = minetest.find_nodes_in_area({x=ppos.x-25,y=ppos.y,z=ppos.z-25},{x=ppos.x+25,y=ppos.y+16,z=ppos.z+25},"wae:sadistic_eggcorn")
+			local pstat = stat[1]
+			for _,v in pairs(minetest.find_nodes_in_area({x=pstat.x-25,y=pstat.y-4,z=pstat.z-25},{x=pstat.x+25,y=pstat.y-20,z=pstat.z+25},"wae:resigned_grass"))do
+				minetest.set_node(v,{name = "wae:resigned_grass_inert"})
+			end
+		end
+	}
+)
+minetest.register_chatcommand("board;start",
+	{
+		description = "Starts eggcorn spawning on board", 
+		privs = {interact=true},
+		func = function(name, param)
+			minetest.chat_send_all("Game Paused!")
+			local player = minetest.get_player_by_name(name)
+			local ppos = player:get_pos()
+			local stat = minetest.find_nodes_in_area({x=ppos.x-25,y=ppos.y,z=ppos.z-25},{x=ppos.x+25,y=ppos.y+16,z=ppos.z+25},"wae:sadistic_eggcorn")
+			local pstat = stat[1]
+			for _,v in pairs(minetest.find_nodes_in_area({x=pstat.x-25,y=pstat.y-4,z=pstat.z-25},{x=pstat.x+25,y=pstat.y-20,z=pstat.z+25},"wae:resigned_grass_inert"))do
+				minetest.set_node(v,{name = "wae:resigned_grass"})
+			end
 		end
 	}
 )
