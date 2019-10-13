@@ -8,7 +8,10 @@ minetest.register_craftitem("wae:warrhammer",{
 	wield_image = "maultest.png",
 	on_use = function(itemstack, user, pointed_thing)
 		if(pointed_thing.under ~= nil)then
-		wae.eggsmash(user, pointed_thing, itemstack)
+			local ppos = user:get_pos()
+			local noi = minetest.get_node(pointed_thing.under)
+			local nodename = noi.name
+			wae.smash(user:get_player_name(),ppos,pointed_thing.under)
 		wae.tumbleparticles(pointed_thing.under,"code_warr.png")
 		else end
 	end,
@@ -21,9 +24,16 @@ minetest.register_craftitem("wae:codex_dimond",{
 	inventory_image = "dimondomicon.png",
 	wield_image = "dimondomicon.png",
 	on_use = function(itemstack, user, pointed_thing)
+		local pos = user:get_pos()
+		local delrad = minetest.find_nodes_in_area({x=pos.x-6,y=pos.y-6,z=pos.z-6},{x=pos.x+6,y=pos.y+6,z=pos.z+6}, {"group:eggy"})
 		if(pointed_thing.under == nil)then
+			if(delrad)then
+				local i = math.random(1,#delrad)
+			wae.smash(user:get_player_name(),ppos,delrad[i])
+			wae.dimond_focused_lazer(delrad[i],"banzer.png")
+			else end
 		else
-		wae.eggsmash(user, pointed_thing, itemstack)
+		wae.smash(user:get_player_name(),ppos,pointed_thing.under)
 		wae.dimond_focused_lazer(pointed_thing.under,"banzer.png")
 		end
 	end,

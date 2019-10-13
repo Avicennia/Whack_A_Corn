@@ -42,20 +42,7 @@ minetest.register_abm({
 	interval = 3.0,
 	chance = 1,
 	action = function(pos, node)
-	for k in ipairs(wae.playurns)do
-	--minetest.chat_send_all(minetest.serialize(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns))))
-	--minetest.chat_send_all(minetest.serialize(wae.tabcomp(wae.playurns,wae.boundchk(wae.playurns))))
-	--minetest.chat_send_all(minetest.serialize(wae.tabtfchk(wae.nameiter(wae.playurns[k],wae.boundchk(wae.playurns)))))
-	end
 	
-	minetest.chat_send_all("--------------BLANK---------------")
-	wae.boundchk(wae.playurns)
-	wae.ttris(wae.attends,wae.boundchk(wae.playurns))
-	for _,v in pairs(wae.attends)do
-	wae.duptrunc(wae.dupchk(v,wae.attends),wae.attends)
-	end
-	minetest.chat_send_all(minetest.serialize(wae.attends))
-
 end
 })
 

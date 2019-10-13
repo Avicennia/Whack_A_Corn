@@ -28,6 +28,7 @@ wae.spewparticles = function(pos,tex)
 	})
 end
 wae.dimond_focused_lazer = function(pos,tex)
+	if(pos)then
 	minetest.add_particlespawner({
 		amount = 29,
 		time = 1,
@@ -47,6 +48,7 @@ wae.dimond_focused_lazer = function(pos,tex)
 		texture = tex,
 		glow = 2
 	})
+else end
 end
 wae.tumbleparticles = function(pos,tex)
 	minetest.add_particlespawner({
@@ -92,41 +94,6 @@ end
 
 wae.bookban = function(tab,node)
 	
-end
-wae.eggsmash = function(user, pointed_thing, itemstack)
-	local ppos = user:get_pos()
-	local pmeta = user:get_meta()
-	local noi = minetest.get_node(pointed_thing.under)
-	local nodename = noi.name
-	if(nodename == "wae:"..wae.quirks[1].."_eggcorn")then
-		pmeta:set_int("score",pmeta:get_int("score")+1)
-		minetest.chat_send_all(user:get_player_name())
-		minetest.chat_send_all(pmeta:get_int("score"))
-	elseif(nodename == "wae:"..wae.quirks[2].."_eggcorn")then
-		wae.eggeffect_deluge(user:get_player_name(),4)
-	
-	elseif(nodename == "wae:"..wae.quirks[3].."_eggcorn")then
-		pmeta:set_int("score",pmeta:get_int("score")+2)
-		minetest.chat_send_all(pmeta:get_int("score"))
-	elseif(nodename == "wae:"..wae.quirks[4].."_eggcorn")then
-		pmeta:set_int("score",pmeta:get_int("score")+1)
-		wae.eggeffect_entomb(user:get_player_name(),3)
-	elseif(nodename == "wae:"..wae.quirks[5].."_eggcorn")then
-		
-		for k,v in ipairs(minetest.find_nodes_in_area({x=ppos.x-8,y=ppos.y,z=ppos.z-8},{x=ppos.x+8,y=ppos.y,z=ppos.z+8},"group:eggy")) do
-			minetest.remove_node(v)
-		end
-		pmeta:set_int("score",pmeta:get_int("score")+1)
-	elseif(nodename == "wae:"..wae.quirks[6].."_eggcorn")then
-		pmeta:set_int("score",pmeta:get_int("score")+3)
-		minetest.chat_send_all(pmeta:get_int("score"))
-	elseif(nodename == "wae:"..wae.quirks[7].."_eggcorn")then
-		pmeta:set_int("score",pmeta:get_int("score")+math.random(1,6))
-		minetest.chat_send_all(pmeta:get_int("score"))
-	end
-	if(minetest.get_item_group(noi.name, "eggy") >= 1) then
-	minetest.set_node(pointed_thing.under, {name = "wae:smashed_egg"})
-	else end
 end
 
 wae.boundchk = function(names)
@@ -232,4 +199,51 @@ function wae.duptrunc(tn,tl)
 		end
 	end
 end
+function wae.smash(pname,ppos,npos)
+	local nname = npos and minetest.get_node(npos).name
+	local player = minetest.get_player_by_name(pname)
+	local helditem = player:get_wielded_item():get_name()
+	local index = 0
+	for i=1,#wae.quirks,1 do
+		if(nname == "wae:"..wae.quirks[i].."_eggcorn")then
+			index = i
+			if(index == 1)then
+				local pmeta = player:get_meta()
+				pmeta:set_int("score", pmeta:get_int("score"),1)
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+			elseif(index ==2)then
+				local pmeta = player:get_meta()
+				pmeta:set_int("score", pmeta:get_int("score"),2)
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+				wae.eggeffect_deluge(pname,4)
+			elseif(index ==3)then
+				local pmeta = player:get_meta()
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+				pmeta:set_int("score", pmeta:get_int("score"),2)
+			elseif(index ==4)then
+				local pmeta = player:get_meta()
+				pmeta:set_int("score", pmeta:get_int("score"),2)
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+				wae.eggeffect_entomb(pname,3)
+			elseif(index ==5)then
+				local pmeta = player:get_meta()
+				pmeta:set_int("score", pmeta:get_int("score"),1)
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+				for k,v in ipairs(minetest.find_nodes_in_area({x=npos.x-8,y=npos.y,z=npos.z-8},{x=npos.x+8,y=npos.y,z=npos.z+8},"group:eggy")) do
+					minetest.remove_node(v)
+				end
+			elseif(index ==6)then
+				local pmeta = player:get_meta()
+				pmeta:set_int("score", pmeta:get_int("score"),4)
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+			elseif(index ==7)then
+				local pmeta = player:get_meta()
+				minetest.set_node(npos,{name = "wae:smashed_egg"})
+				pmeta:set_int("score",pmeta:get_int("score")+math.random(1,6))
+			else end
+		else end
+	end
+	
 
+
+end
