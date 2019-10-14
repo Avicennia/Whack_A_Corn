@@ -5,7 +5,7 @@ wae.array_rand = function(t)
 	math.random(1,#t);math.random(1,#t);local res = math.random(1,#t)
 	return t[res]
 end
-
+--	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	
 wae.spewparticles = function(pos,tex)
 	minetest.add_particlespawner({
 		amount = 4,
@@ -48,7 +48,18 @@ wae.dimond_focused_lazer = function(pos,tex)
 		texture = tex,
 		glow = 2
 	})
+	minetest.sound_play({name ="lbeam"},{
+		pos = pos,
+		gain = 50.0, -- default
+		max_hear_distance = 32,
+	})
 else end
+end
+wae.warr_ham = function(pos)
+	minetest.sound_play({name ="warrhammerwave"},{
+		pos = pos,
+		gain = 50.0, -- default
+		max_hear_distance = 32,})
 end
 wae.tumbleparticles = function(pos,tex)
 	minetest.add_particlespawner({
@@ -71,7 +82,9 @@ wae.tumbleparticles = function(pos,tex)
 		glow = 2
 	})
 end
+--	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
+--	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	--
 wae.eggeffect_entomb = function(name, dur)
 	local pos = minetest.get_player_by_name(name):get_pos()
 	local airfield = minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "air"})
@@ -91,11 +104,13 @@ wae.eggeffect_deluge = function(name, dur)
 	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+5,z=pos.z+1},{name = "default:water_source"})) do 
 	minetest.remove_node(v)end end)
 end
+--	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	-- ^^
 
 wae.bookban = function(tab,node)
 	
 end
 
+--	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
 wae.boundchk = function(names)
 	-- ^ Function to check for players that meet criteria to be considered "present" in the play area.
 	-- Two tables, one to store positions of players, and one to store the name of the node beneath them;
@@ -122,6 +137,8 @@ wae.boundchk = function(names)
 				if(names[n] == v) then
 					table.remove(wae.attends, k)
 					minetest.chat_send_all("Player "..names[n].." went out of bounds!")
+					local pmeta = minetest.get_player_by_name(v):get_meta()
+					pmeta:set_int("score",0)
 				end
 			end
 		end
@@ -154,7 +171,7 @@ wae.tappend = function(tl,td)
 		table.insert(tl,td[n])
 	end
 end
-wae.ttris = function(tl,td)
+wae.ttris = function(tl,td) -- Checks for name duplicates before adding the names from a table to a legacy table [tl]
 	n = 0
 	for k,v in ipairs(td) do	
 		if(v ~= tl[n] and type(v) == "string")then
@@ -199,6 +216,8 @@ function wae.duptrunc(tn,tl)
 		end
 	end
 end
+--	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	^^
+
 function wae.smash(pname,ppos,npos)
 	local nname = npos and minetest.get_node(npos).name
 	local player = minetest.get_player_by_name(pname)
@@ -209,32 +228,32 @@ function wae.smash(pname,ppos,npos)
 			index = i
 			if(index == 1)then
 				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score"),1)
+				pmeta:set_int("score", pmeta:get_int("score")+1)
 				minetest.set_node(npos,{name = "wae:smashed_egg"})
 			elseif(index ==2)then
 				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score"),2)
+				pmeta:set_int("score", pmeta:get_int("score")+2)
 				minetest.set_node(npos,{name = "wae:smashed_egg"})
 				wae.eggeffect_deluge(pname,4)
 			elseif(index ==3)then
 				local pmeta = player:get_meta()
 				minetest.set_node(npos,{name = "wae:smashed_egg"})
-				pmeta:set_int("score", pmeta:get_int("score"),2)
+				pmeta:set_int("score", pmeta:get_int("score")+2)
 			elseif(index ==4)then
 				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score"),2)
+				pmeta:set_int("score", pmeta:get_int("score")+2)
 				minetest.set_node(npos,{name = "wae:smashed_egg"})
 				wae.eggeffect_entomb(pname,3)
 			elseif(index ==5)then
 				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score"),1)
+				pmeta:set_int("score", pmeta:get_int("score")+1)
 				minetest.set_node(npos,{name = "wae:smashed_egg"})
 				for k,v in ipairs(minetest.find_nodes_in_area({x=npos.x-8,y=npos.y,z=npos.z-8},{x=npos.x+8,y=npos.y,z=npos.z+8},"group:eggy")) do
 					minetest.remove_node(v)
 				end
 			elseif(index ==6)then
 				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score"),4)
+				pmeta:set_int("score", pmeta:get_int("score")+4)
 				minetest.set_node(npos,{name = "wae:smashed_egg"})
 			elseif(index ==7)then
 				local pmeta = player:get_meta()

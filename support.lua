@@ -41,8 +41,14 @@ minetest.register_abm({
 	nodenames = {"wae:sadistic_eggcorn"},
 	interval = 3.0,
 	chance = 1,
-	action = function(pos, node)
-	
+	action = function(pos, node)	
+		wae.boundchk(wae.playurns)
+		wae.ttris(wae.attends,wae.boundchk(wae.playurns))
+		minetest.chat_send_all(minetest.serialize(wae.attends))
+		for _,v in pairs(wae.attends)do
+		wae.duptrunc(wae.dupchk(v,wae.attends),wae.attends)
+		end
+
 end
 })
 

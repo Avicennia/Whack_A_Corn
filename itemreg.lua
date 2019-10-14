@@ -9,13 +9,13 @@ minetest.register_craftitem("wae:warrhammer",{
 	on_use = function(itemstack, user, pointed_thing)
 		if(pointed_thing.under ~= nil)then
 			local ppos = user:get_pos()
-			local noi = minetest.get_node(pointed_thing.under)
-			local nodename = noi.name
 			wae.smash(user:get_player_name(),ppos,pointed_thing.under)
 		wae.tumbleparticles(pointed_thing.under,"code_warr.png")
 		else end
 	end,
-	on_secondary_use = function()
+	on_secondary_use = function(itemstack, user, pointed_thing)
+			local pos = user:get_pos()
+			wae.warr_ham(pos)
 	end
 })
 minetest.register_craftitem("wae:codex_dimond",{
@@ -37,7 +37,8 @@ minetest.register_craftitem("wae:codex_dimond",{
 		wae.dimond_focused_lazer(pointed_thing.under,"banzer.png")
 		end
 	end,
-	on_secondary_use = function()
+	on_secondary_use = function(itemstack,user)
+		
 	end
 })
 minetest.register_craftitem("wae:jagged_flint",{
@@ -45,10 +46,12 @@ minetest.register_craftitem("wae:jagged_flint",{
 	groups = {metal = 1, event = 2, thwacky = 3},
 	inventory_image = "flint.png",
 	on_use = function(itemstack, user, pointed_thing)
-		if(pointed_thing.under == nil)then
-		else
-		wae.eggsmash(user, pointed_thing, itemstack) 
-		end
+		if(pointed_thing.under ~= nil)then
+		elseif(pointed_thing.under ~= nil)then
+				local ppos = user:get_pos()
+				wae.smash(user:get_player_name(),ppos,pointed_thing.under)
+			
+		else end
 	end,
 	on_secondary_use = function()
 	end
@@ -59,10 +62,11 @@ minetest.register_craftitem("wae:bec_de_corbin",{
 	inventory_image = "bdc.png",
 	wield_image = "bdc.png",
 	on_use = function(itemstack, user, pointed_thing)
-		if(pointed_thing.under == nil)then
-		else
-		wae.eggsmash(user, pointed_thing, itemstack)
-		end
+		if(pointed_thing.under ~= nil)then
+		elseif(pointed_thing.under ~= nil)then
+				local ppos = user:get_pos()
+				wae.smash(user:get_player_name(),ppos,pointed_thing.under)
+		else end
 	end,
 	on_secondary_use = function()
 	end
@@ -73,10 +77,11 @@ minetest.register_craftitem("wae:baseball_bat",{
 	inventory_image = "bbat.png",
 	wield_image = "bbat.png",
 	on_use = function(itemstack, user, pointed_thing)
-		if(pointed_thing.under == nil)then
-		else
-		wae.eggsmash(user, pointed_thing, itemstack)
-		end
+		if(pointed_thing.under ~= nil)then
+		elseif(pointed_thing.under ~= nil)then
+				local ppos = user:get_pos()
+				wae.smash(user:get_player_name(),ppos,pointed_thing.under)
+		else end
 	end,
 	on_secondary_use = function()
 	end
@@ -91,12 +96,30 @@ minetest.register_craftitem("wae:vampirewhip",{
 	groups = {metal = 1, event = 2, thwacky = 4},
 	range = 8,
 	on_use = function(itemstack, user, pointed_thing)
-		if(pointed_thing.under == nil)then
+		if(pointed_thing.under ~= nil)then
+		elseif(pointed_thing.under ~= nil)then
+				local ppos = user:get_pos()
+				wae.smash(user:get_player_name(),ppos,pointed_thing.under)
 		else
-		wae.eggsmash(user, pointed_thing, itemstack)
 		end
 	end,
 	on_secondary_use = function()
 		minetest.chat_send_all("hi")
+	end
+})
+minetest.register_craftitem("wae:paws",{
+	description = "Paws of the Kittypet",
+	groups = {metal = 1, event = 2, thwacky = 3},
+	inventory_image = "pawpaw.png",
+	wield_image = "trinket_rescue.png",
+	on_use = function(itemstack, user, pointed_thing)
+		if(pointed_thing.under == nil)then
+		elseif(pointed_thing.under ~= nil)then
+				local ppos = user:get_pos()
+				wae.smash(user:get_player_name(),ppos,pointed_thing.under)
+			else
+		end
+	end,
+	on_secondary_use = function()
 	end
 })
