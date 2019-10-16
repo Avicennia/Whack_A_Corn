@@ -112,31 +112,6 @@ minetest.register_node("wae:deaf_glass", {
 })
 ]]
 
-local texas = {"nc_tree_eggcorn.png", "melancholy_eggcorn.png", "cheerful_eggcorn.png", "petrified_eggcorn.png", "myscus_eggcorn.png","triumphant_eggcorn.png","fruity_eggcorn.png"}
-for n=1,7,1 do 
-	minetest.register_node("wae:"..wae.quirks[n].."_eggcorn",{
-	description = wae.quirks[n].."Eggcorn",
-	drawtype = "plantlike",
-	tiles = {texas[n]},
-	paramtype = "light",
-	groups = {thumpy = 1, eggy = 2},
-	on_construct = function(pos)
-		if(minetest.get_node(pos).name == "wae:fruity_eggcorn")then
-			minetest.after(1,function() minetest.remove_node(pos)end)
-		else
-		minetest.after(3,function() minetest.remove_node(pos)end)
-		end
-	end	
-})end
-for n=1,7,1 do 
-	minetest.register_node("wae:"..wae.quirks[n].."_eggcorn_inert",{
-	description = wae.quirks[n].."Eggcorn",
-	drawtype = "plantlike",
-	tiles = {texas[n]},
-	paramtype = "light",
-	groups = {pseudoeggy = 4}
-	})
-end
 minetest.register_node("wae:dev", {
 		tiles = {
 			"nc_tree:log.png",
