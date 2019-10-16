@@ -30,6 +30,7 @@ dofile(modpath.."/support.lua")
 dofile(modpath.."/framework.lua")
 dofile(modpath.."/nodereg.lua")
 dofile(modpath.."/itemreg.lua")
+dofile(modpath.."/tempnodes.lua")
 dofile(modpath.."/quirkcorns.lua")
 
 minetest.register_entity("wae:myentity",{

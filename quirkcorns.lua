@@ -1,10 +1,11 @@
-wae.quirks = {}
+wae.quirks = wae.quirks or {}
 
 function wae.register_quirk(name, def)
 	def = def or {}
 	local desc = def.description or (name .. "Eggcorn")
 	local tiles = { def.tile or (name .. "_eggcorn.png") }
 	wae.quirks[#wae.quirks + 1] = name
+
 	minetest.register_node("wae:" .. name .. "_eggcorn", {
 		description = desc,
 		drawtype = "plantlike",
@@ -26,40 +27,44 @@ function wae.register_quirk(name, def)
 	})
 end
 
-function wae.smash(pname, ppos, npos)
-	local nname = npos and minetest.get_node(npos).name
-	local def = nname and minetest.registered_nodes[nname]
-	local quirk = def and def.wae_quirk
-	if not quirk then return end
-
-	local value = quirk.value or 1
-	if type(value) == "function" then value = value(pname, npos) end
-
-	local player = minetest.get_player_by_name(pname)
-	local pmeta = player:get_meta()
-	pmeta:set_int("score", pmeta:get_int("score")+value)
-
-	minetest.set_node(npos,{name = "wae:smashed_egg"})
-
-	if quirk.fx then quirk.fx(pname, npos) end
-end
-
 wae.register_quirk("simple", {
 	tile = "nc_tree_eggcorn.png"
 })
+
 wae.register_quirk("melancholy", {
 	value = 2,
 	fx = function(pname)
-		return wae.eggeffect_deluge(pname, 4)
+		local pos = minetest.get_player_by_name(pname):get_pos()
+		return wae.tempnodes(4, {{
+			pos = {x = pos.x, y = pos.y + 3, z = pos.z},
+			orig = "air",
+			temp = wae.anynode("default:water_source", "nc_terrain:water_source")
+		}})
 	end
 })
+
 wae.register_quirk("cheerful", { value = 2 })
+
 wae.register_quirk("petrified", {
 	value = 2,
 	fx = function(pname)
-		return wae.eggeffect_entomb(pname, 3)
+		local player = minetest.get_player_by_name(pname)
+		local pos = vector.round(player:get_pos())
+		local picked = wae.anynode("default:stone", "nc_terrain:stone")
+		local nodes = {}
+		for _, p in pairs(minetest.find_nodes_in_area(
+			{x=pos.x-1,y=pos.y,z=pos.z-1},
+			{x=pos.x+1,y=pos.y+3,z=pos.z+1},
+			{name = "air"})) do
+				if pos.x ~= p.x or pos.z ~= p.z then
+					nodes[#nodes + 1] = {pos = p, orig = "air", temp = picked}
+				end
+		end
+		player:set_pos(pos)
+		return wae.tempnodes(3, nodes)
 	end
 })
+
 wae.register_quirk("myscus", {
 	fx = function(_, npos)
 		for _, v in ipairs(minetest.find_nodes_in_area(
@@ -70,10 +75,12 @@ wae.register_quirk("myscus", {
 		end
 	end
 })
+
 wae.register_quirk("victorious", {
 	value = 4,
 	tile = "triumphant_eggcorn.png"
 })
+
 wae.register_quirk("fruity", {
 	value = function()
 		return math.random(1, 6)

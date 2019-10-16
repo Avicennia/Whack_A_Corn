@@ -95,30 +95,6 @@ end
 
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
---	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	--
-wae.eggeffect_entomb = function(name, dur)
-	local pos = minetest.get_player_by_name(name):get_pos()
-	local airfield = minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "air"})
-	local stone = wae.anynode("default:stone", "nc_terrain:stone")
-	for k,v in ipairs(airfield) do
-		minetest.set_node(v, {name = stone})
-	end
-	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = stone})) do 
-	minetest.remove_node(v)end end)
-end
-
-wae.eggeffect_deluge = function(name, dur)
-	local pos = minetest.get_player_by_name(name):get_pos()
-	local airfield = minetest.find_nodes_in_area({x=pos.x,y=pos.y+4,z=pos.z},{x=pos.x,y=pos.y+3,z=pos.z},{name = "air"})
-	local water = wae.anynode("default:water_source", "nc_terrain:water_source")
-	for k,v in ipairs(airfield) do
-		minetest.set_node(v, {name = water})
-	end
-	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+5,z=pos.z+1},{name = water})) do 
-	minetest.remove_node(v)end end)
-end
---	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	-- ^^
-
 wae.bookban = function(tab,node)
 	
 end
@@ -228,4 +204,24 @@ function wae.duptrunc(tn,tl)
 			end
 		end
 	end
+end
+
+--	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
+
+function wae.smash(pname, ppos, npos)
+	local nname = npos and minetest.get_node(npos).name
+	local def = nname and minetest.registered_nodes[nname]
+	local quirk = def and def.wae_quirk
+	if not quirk then return end
+
+	local value = quirk.value or 1
+	if type(value) == "function" then value = value(pname, npos) end
+
+	local player = minetest.get_player_by_name(pname)
+	local pmeta = player:get_meta()
+	pmeta:set_int("score", pmeta:get_int("score")+value)
+
+	minetest.set_node(npos,{name = "wae:smashed_egg"})
+
+	if quirk.fx then quirk.fx(pname, npos) end
 end
