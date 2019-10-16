@@ -2,7 +2,6 @@ local thismod = minetest.get_current_modname()
 local modpath = minetest.get_modpath(thismod)
 wae_s = minetest.get_mod_storage()
 wae = {}
-wae.quirks = {"simple","melancholy","cheerful","petrified","myscus","victorious","fruity"}
 wae.playurns = {}
 wae.attends = {}
 wae.game_create = function(pos)
@@ -31,6 +30,8 @@ dofile(modpath.."/support.lua")
 dofile(modpath.."/framework.lua")
 dofile(modpath.."/nodereg.lua")
 dofile(modpath.."/itemreg.lua")
+dofile(modpath.."/tempnodes.lua")
+dofile(modpath.."/quirkcorns.lua")
 
 minetest.register_entity("wae:myentity",{
     initial_properties = {

@@ -95,30 +95,6 @@ end
 
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
---	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	--
-wae.eggeffect_entomb = function(name, dur)
-	local pos = minetest.get_player_by_name(name):get_pos()
-	local airfield = minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "air"})
-	local stone = wae.anynode("default:stone", "nc_terrain:stone")
-	for k,v in ipairs(airfield) do
-		minetest.set_node(v, {name = stone})
-	end
-	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = stone})) do 
-	minetest.remove_node(v)end end)
-end
-
-wae.eggeffect_deluge = function(name, dur)
-	local pos = minetest.get_player_by_name(name):get_pos()
-	local airfield = minetest.find_nodes_in_area({x=pos.x,y=pos.y+4,z=pos.z},{x=pos.x,y=pos.y+3,z=pos.z},{name = "air"})
-	local water = wae.anynode("default:water_source", "nc_terrain:water_source")
-	for k,v in ipairs(airfield) do
-		minetest.set_node(v, {name = water})
-	end
-	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+5,z=pos.z+1},{name = water})) do 
-	minetest.remove_node(v)end end)
-end
---	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	-- ^^
-
 wae.bookban = function(tab,node)
 	
 end
@@ -229,53 +205,23 @@ function wae.duptrunc(tn,tl)
 		end
 	end
 end
---	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	^^
 
-function wae.smash(pname,ppos,npos)
+--	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
+
+function wae.smash(pname, ppos, npos)
 	local nname = npos and minetest.get_node(npos).name
+	local def = nname and minetest.registered_nodes[nname]
+	local quirk = def and def.wae_quirk
+	if not quirk then return end
+
+	local value = quirk.value or 1
+	if type(value) == "function" then value = value(pname, npos) end
+
 	local player = minetest.get_player_by_name(pname)
-	local helditem = player:get_wielded_item():get_name()
-	local index = 0
-	for i=1,#wae.quirks,1 do
-		if(nname == "wae:"..wae.quirks[i].."_eggcorn")then
-			index = i
-			if(index == 1)then
-				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score")+1)
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-			elseif(index ==2)then
-				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score")+2)
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-				wae.eggeffect_deluge(pname,4)
-			elseif(index ==3)then
-				local pmeta = player:get_meta()
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-				pmeta:set_int("score", pmeta:get_int("score")+2)
-			elseif(index ==4)then
-				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score")+2)
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-				wae.eggeffect_entomb(pname,3)
-			elseif(index ==5)then
-				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score")+1)
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-				for k,v in ipairs(minetest.find_nodes_in_area({x=npos.x-8,y=npos.y,z=npos.z-8},{x=npos.x+8,y=npos.y,z=npos.z+8},"group:eggy")) do
-					minetest.remove_node(v)
-				end
-			elseif(index ==6)then
-				local pmeta = player:get_meta()
-				pmeta:set_int("score", pmeta:get_int("score")+4)
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-			elseif(index ==7)then
-				local pmeta = player:get_meta()
-				minetest.set_node(npos,{name = "wae:smashed_egg"})
-				pmeta:set_int("score",pmeta:get_int("score")+math.random(1,6))
-			else end
-		else end
-	end
-	
+	local pmeta = player:get_meta()
+	pmeta:set_int("score", pmeta:get_int("score")+value)
 
+	minetest.set_node(npos,{name = "wae:smashed_egg"})
 
+	if quirk.fx then quirk.fx(pname, npos) end
 end
