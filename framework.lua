@@ -82,26 +82,39 @@ wae.tumbleparticles = function(pos,tex)
 		glow = 2
 	})
 end
+
+wae.anynode = function(...)
+	local t = {...}
+	for _, name in ipairs(t) do
+		if minetest.registered_nodes[name] then
+			return name
+		end
+	end
+	error("No nodes found from " .. table.concat(t, ", "))
+end
+
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
 --	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	--
 wae.eggeffect_entomb = function(name, dur)
 	local pos = minetest.get_player_by_name(name):get_pos()
 	local airfield = minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "air"})
+	local stone = wae.anynode("default:stone", "nc_terrain:stone")
 	for k,v in ipairs(airfield) do
-		minetest.set_node(v, {name = "default:stone" or "nc_terrain:stone"})
+		minetest.set_node(v, {name = stone})
 	end
-	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = "default:stone"})) do 
+	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+3,z=pos.z+1},{name = stone})) do 
 	minetest.remove_node(v)end end)
 end
 
 wae.eggeffect_deluge = function(name, dur)
 	local pos = minetest.get_player_by_name(name):get_pos()
 	local airfield = minetest.find_nodes_in_area({x=pos.x,y=pos.y+4,z=pos.z},{x=pos.x,y=pos.y+3,z=pos.z},{name = "air"})
+	local water = wae.anynode("default:water_source", "nc_terrain:water_source")
 	for k,v in ipairs(airfield) do
-		minetest.set_node(v, {name = "default:water_source" or "nc_terrain:water_source"})
+		minetest.set_node(v, {name = water})
 	end
-	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+5,z=pos.z+1},{name = "default:water_source"})) do 
+	minetest.after(dur, function() for k,v in pairs(minetest.find_nodes_in_area({x=pos.x-1,y=pos.y,z=pos.z-1},{x=pos.x+1,y=pos.y+5,z=pos.z+1},{name = water})) do 
 	minetest.remove_node(v)end end)
 end
 --	--	--	--	--	--	EGG IN-WORLD MODIFIERS	--	--	--	--	--	-- ^^
