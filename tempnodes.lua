@@ -1,4 +1,4 @@
-minetest.register_entity("wae:reverter", {
+minetest.register_entity("wac:reverter", {
 	initial_properties = {
 		hp_max = 1,
 		physical = false,
@@ -29,7 +29,7 @@ minetest.register_entity("wae:reverter", {
 	end
 })
 
-function wae.tempnodes(ttl, list)
+function wac.tempnodes(ttl, list)
 	local centroid = {x = 0, y = 0, z = 0}
 	local div = 0
 	local did = {}
@@ -44,6 +44,6 @@ function wae.tempnodes(ttl, list)
 	end
 	if div < 1 then return end
 	centroid = vector.multiply(centroid, 1 / div)
-	local ent = minetest.add_entity(centroid, "wae:reverter"):get_luaentity()
+	local ent = minetest.add_entity(centroid, "wac:reverter"):get_luaentity()
 	ent.data = {ttl = ttl, nodes = did}
 end

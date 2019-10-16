@@ -1,12 +1,12 @@
 -- Functions, Variables, and supporting shared references are stored here.
 -- Just for the sake of slightly better separation of components.
 
-wae.array_rand = function(t)
+wac.array_rand = function(t)
 	math.random(1,#t);math.random(1,#t);local res = math.random(1,#t)
 	return t[res]
 end
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	
-wae.spewparticles = function(pos,tex)
+wac.spewparticles = function(pos,tex)
 	minetest.add_particlespawner({
 		amount = 4,
 		time = 1,
@@ -27,7 +27,7 @@ wae.spewparticles = function(pos,tex)
 		glow = 2
 	})
 end
-wae.dimond_focused_lazer = function(pos,tex)
+wac.dimond_focused_lazer = function(pos,tex)
 	if(pos)then
 	minetest.add_particlespawner({
 		amount = 29,
@@ -55,13 +55,13 @@ wae.dimond_focused_lazer = function(pos,tex)
 	})
 else end
 end
-wae.warr_ham = function(pos)
+wac.warr_ham = function(pos)
 	minetest.sound_play({name ="warrhammerwave"},{
 		pos = pos,
 		gain = 50.0, -- default
 		max_hear_distance = 32,})
 end
-wae.tumbleparticles = function(pos,tex)
+wac.tumbleparticles = function(pos,tex)
 	minetest.add_particlespawner({
 		amount = 40,
 		time = 2,
@@ -83,7 +83,7 @@ wae.tumbleparticles = function(pos,tex)
 	})
 end
 
-wae.anynode = function(...)
+wac.anynode = function(...)
 	local t = {...}
 	for _, name in ipairs(t) do
 		if minetest.registered_nodes[name] then
@@ -95,15 +95,15 @@ end
 
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
-wae.bookban = function(tab,node)
+wac.bookban = function(tab,node)
 	
 end
 
 --	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
-wae.boundchk = function(names)
+wac.boundchk = function(names)
 	-- ^ Function to check for players that meet criteria to be considered "present" in the play area.
 	-- Two tables, one to store positions of players, and one to store the name of the node beneath them;
-	-- players that have [wae:resigned_grass] beneath them, under typical circumstances should only be those in
+	-- players that have [wac:resigned_grass] beneath them, under typical circumstances should only be those in
 	-- an ongoing game or playfield, as this node is intended only to be spawned in for the playfield.
 	local post = {}
 	local post_nunder = {}
@@ -119,12 +119,12 @@ wae.boundchk = function(names)
 	--minetest.chat_send_all(minetest.serialize(post))
 	--minetest.chat_send_all(minetest.serialize(post_nunder))
 	for n = 1, #names, 1 do
-		if(post_nunder[n] == "wae:resigned_grass")then
+		if(post_nunder[n] == "wac:resigned_grass")then
 				table.insert(nb,n)
 				table.insert(nb,names[n])
-			else for k,v in ipairs(wae.attends)do
+			else for k,v in ipairs(wac.attends)do
 				if(names[n] == v) then
-					table.remove(wae.attends, k)
+					table.remove(wac.attends, k)
 					minetest.chat_send_all("Player "..names[n].." went out of bounds!")
 					local pmeta = minetest.get_player_by_name(v):get_meta()
 					pmeta:set_int("score",0)
@@ -132,9 +132,9 @@ wae.boundchk = function(names)
 			end
 		end
 	end
-	return nb -- Returns a table containing an index and name for every player with [wae:resigned_grass] under their feet.
+	return nb -- Returns a table containing an index and name for every player with [wac:resigned_grass] under their feet.
 end
-wae.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to every value indexed in table <tab>.
+wac.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to every value indexed in table <tab>.
 	local tablerv = {}
 	for n=1, #tab, 1 do
 		if(tab[n] == name)then 
@@ -144,7 +144,7 @@ wae.nameiter = function(name,tab) -- Returns a table of BOOL values after compar
 	end
 	return tablerv
 end
-wae.tabcomp = function(tl,td)
+wac.tabcomp = function(tl,td)
 	local rv = 0 -- 
 	if(#td/2 == #tl)then
 		rv = "equal"
@@ -155,12 +155,12 @@ wae.tabcomp = function(tl,td)
 	else rv[1] = "und" end
 return rv 
 end
-wae.tappend = function(tl,td)
+wac.tappend = function(tl,td)
 	for n=2, #td, 2 do
 		table.insert(tl,td[n])
 	end
 end
-wae.ttris = function(tl,td) -- Checks for name duplicates before adding the names from a table to a legacy table [tl]
+wac.ttris = function(tl,td) -- Checks for name duplicates before adding the names from a table to a legacy table [tl]
 	n = 0
 	for k,v in ipairs(td) do	
 		if(v ~= tl[n] and type(v) == "string")then
@@ -171,7 +171,7 @@ wae.ttris = function(tl,td) -- Checks for name duplicates before adding the name
 	end
 end
 
-wae.tabtfchk = function(tab)
+wac.tabtfchk = function(tab)
 	local numtab = {}
 	for n=1, #tab, 1 do
 		if(tab[n] == true)then
@@ -181,7 +181,7 @@ wae.tabtfchk = function(tab)
 	end
 	return numtab
 end
-function wae.dupchk(name,tab)
+function wac.dupchk(name,tab)
 	local rv = {name,0,"white"}
 	for _,v in ipairs(tab) do
 		if(v == name and rv[2] == 0)then
@@ -193,7 +193,7 @@ function wae.dupchk(name,tab)
 	end
 	return rv
 end
-function wae.duptrunc(tn,tl)
+function wac.duptrunc(tn,tl)
 	if(tn[2] > 1 and tn[3] == "yellow")then
 		for n = 1, tn[2]-1 do
 			for k,v in ipairs(tl)do
@@ -208,10 +208,10 @@ end
 
 --	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
 
-function wae.smash(pname, ppos, npos)
+function wac.smash(pname, ppos, npos)
 	local nname = npos and minetest.get_node(npos).name
 	local def = nname and minetest.registered_nodes[nname]
-	local quirk = def and def.wae_quirk
+	local quirk = def and def.wac_quirk
 	if not quirk then return end
 
 	local value = quirk.value or 1
@@ -221,7 +221,7 @@ function wae.smash(pname, ppos, npos)
 	local pmeta = player:get_meta()
 	pmeta:set_int("score", pmeta:get_int("score")+value)
 
-	minetest.set_node(npos,{name = "wae:smashed_egg"})
+	minetest.set_node(npos,{name = "wac:smashed_egg"})
 
 	if quirk.fx then quirk.fx(pname, npos) end
 end

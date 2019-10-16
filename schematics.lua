@@ -9,11 +9,11 @@
 
 
 local n1 = { name = "air", prob = 0 }
-local n2 = { name = "wae:stone" }
+local n2 = { name = "wac:stone" }
 local n3 = { name = "ignore" }
-local n4 = { name = "wae:resigned_grass" }
+local n4 = { name = "wac:resigned_grass" }
 
-wae.thefield = {
+wac.thefield = {
 	yslice_prob = {
 		
 	},
