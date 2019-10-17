@@ -1,3 +1,6 @@
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
+
 --
 --
 --
@@ -5,30 +8,31 @@
 local wac_s = minetest.get_mod_storage()
 
 --Sadistic eggcorn God: Game starting node
-minetest.register_node("wac:sadistic_eggcorn",{
+minetest.register_node(thismod .. ":sadistic_eggcorn",{
 	description = "Sadistic Eggcorn",
 	drawtype = "plantlike",
 	tiles = {"sadistic_eggcorn.png"},
 	groups = {cracky = 2, eventy = 2},
 	on_rightclick = function(pos)
 		wac.game_create(pos)
-		minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z}, {name="wac:sadistic_eggcorn"})
+		minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z},
+			{name=thismod .. ":sadistic_eggcorn"})
 		wac_s:set_string("gboard",minetest.serialize(
 			minetest.find_nodes_in_area(
 				{x=pos.x-23,y=pos.y,z=pos.z-23},
 				{x=pos.x+23,y=pos.y-15,z=pos.z+23},
-				{name = "wac:resigned_grass"})))
+				{name = thismod .. ":resigned_grass"})))
 		minetest.remove_node(pos)
 		for _,v in ipairs(minetest.find_nodes_in_area(
 			{x=pos.x-23,y=pos.y,z=pos.z-23},
 			{x=pos.x+23,y=pos.y-15,z=pos.z+23},
-			{name = "wac:resigned_grass"}))do
+			{name = thismod .. ":resigned_grass"}))do
 			wac.spewparticles(v,"dev_tex.png")
 		end
 	end
 })
 --Fence: Designates area where the game is conducted.
-minetest.register_node("wac:fence",{
+minetest.register_node(thismod .. ":fence",{
 	description = "Subjugatory Fence",
 	tiles = {"subjugatory_fence.png"},
 	groups = {choppy = 3},
@@ -41,7 +45,7 @@ minetest.register_node("wac:fence",{
 		}
 	}
 })
-minetest.register_node("wac:resigned_grass",{
+minetest.register_node(thismod .. ":resigned_grass",{
 	description = "Resigned Grass",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
 	tiles = {"resigned_grass_top.png"},
@@ -57,16 +61,17 @@ minetest.register_node("wac:resigned_grass",{
 	 on_timer = function(pos)
 		local pup = {x=pos.x,y=pos.y+1,z=pos.z}
 		if(minetest.get_node(pup).name == "air")then
-		minetest.set_node(pup,{name = "wac:"..wac.array_rand(wac.quirks).."_eggcorn"})
+		minetest.set_node(pup,{name = thismod .. ":"..
+			wac.array_rand(wac.quirks).."_eggcorn"})
 	 end
 	end
 })
-minetest.register_node("wac:resigned_grass_inert",{
+minetest.register_node(thismod .. ":resigned_grass_inert",{
 	description = "Resigned Grass",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, pseudoeggy = 2},
 	tiles = {"resigned_grass_top.png"},
 })
-minetest.register_node("wac:smashed_egg", {
+minetest.register_node(thismod .. ":smashed_egg", {
 	description = "Smashed Eggcorn",
 	groups = {choppy = 1, eggy = 2},
 	tiles = {"hashed_eggcorn.png"},
@@ -86,7 +91,7 @@ minetest.register_node("wac:smashed_egg", {
 		}
 	},
 })
-minetest.register_node("wac:deaf_glass", {
+minetest.register_node(thismod .. ":deaf_glass", {
     description = "Glass",
     drawtype = "glasslike_framed",
     tiles = {"deaf_glass.png", "deaf_glass_detail.png"},
@@ -96,11 +101,11 @@ minetest.register_node("wac:deaf_glass", {
     sunlight_propagates = true,
 	groups = {cracky = 3, oddly_breakable_by_hand = 3}
 })
---[[minetest.register_node("wac:subjugatory_fpost", {
+--[[minetest.register_node(thismod .. ":subjugatory_fpost", {
 	tiles = {"nc_tree_tree_side.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
-	connects_to = {"wac:subjugatory_fpost"},
+	connects_to = {thismod .. ":subjugatory_fpost"},
 	connect_sides = { "top", "bottom", "front", "left", "back", "right" },
 	node_box = {
 		type = "connected",
@@ -115,9 +120,9 @@ minetest.register_node("wac:deaf_glass", {
 })
 ]]
 
-minetest.register_node("wac:dev", {
+minetest.register_node(thismod .. ":dev", {
 		tiles = {
-			"nc_tree:log.png",
+			"nc_tree_log.png",
 		},
 		drawtype = "nodebox",
 		paramtype = "light",
@@ -136,7 +141,7 @@ minetest.register_node("wac:dev", {
 		minetest.remove_node({x=pos.x,y=pos.y-1,z=pos.z})
 	end
 })
-minetest.register_node("wac:stone",{
+minetest.register_node(thismod .. ":stone",{
 	description = "Stone",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
 	tiles = {"stone.png"},

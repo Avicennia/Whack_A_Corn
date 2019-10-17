@@ -1,3 +1,6 @@
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
+
 -- Functions, Variables, and supporting shared references are stored here.
 -- Just for the sake of slightly better separation of components.
 
@@ -119,7 +122,7 @@ wac.boundchk = function(names)
 	--minetest.chat_send_all(minetest.serialize(post))
 	--minetest.chat_send_all(minetest.serialize(post_nunder))
 	for n = 1, #names, 1 do
-		if(post_nunder[n] == "wac:resigned_grass")then
+		if(post_nunder[n] == thismod .. ":resigned_grass")then
 				table.insert(nb,n)
 				table.insert(nb,names[n])
 			else for k,v in ipairs(wac.attends)do
@@ -220,7 +223,7 @@ function wac.smash(pname, _, npos)
 	local pmeta = player:get_meta()
 	pmeta:set_int("score", pmeta:get_int("score")+value)
 
-	minetest.set_node(npos,{name = "wac:smashed_egg"})
+	minetest.set_node(npos,{name = thismod .. ":smashed_egg"})
 
 	if quirk.fx then quirk.fx(pname, npos) end
 end

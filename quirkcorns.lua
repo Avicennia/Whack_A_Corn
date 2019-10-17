@@ -1,3 +1,6 @@
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
+
 wac.quirks = wac.quirks or {}
 
 function wac.register_quirk(name, def)
@@ -6,7 +9,7 @@ function wac.register_quirk(name, def)
 	local tiles = { def.tile or (name .. "_eggcorn.png") }
 	wac.quirks[#wac.quirks + 1] = name
 
-	minetest.register_node("wac:" .. name .. "_eggcorn", {
+	minetest.register_node(thismod .. ":" .. name .. "_eggcorn", {
 		description = desc,
 		drawtype = "plantlike",
 		tiles = tiles,
@@ -18,7 +21,7 @@ function wac.register_quirk(name, def)
 		on_timer = minetest.remove_node,
 		wac_quirk = def
 	})
-	minetest.register_node("wac:" .. name .. "_eggcorn_inert", {
+	minetest.register_node(thismod .. ":" .. name .. "_eggcorn_inert", {
 		description = desc,
 		drawtype = "plantlike",
 		tiles = tiles,

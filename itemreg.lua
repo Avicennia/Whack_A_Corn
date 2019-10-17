@@ -1,7 +1,10 @@
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
+
 --potsu:damas,
 --
 --
-minetest.register_craftitem("wac:warrhammer",{
+minetest.register_craftitem(thismod .. ":warrhammer",{
 	description = "Warr Hammer",
 	groups = {metal = 1, thwacky = 2},
 	inventory_image = "maultest.png",
@@ -18,7 +21,7 @@ minetest.register_craftitem("wac:warrhammer",{
 			wac.warr_ham(pos)
 	end
 })
-minetest.register_craftitem("wac:codex_dimond",{
+minetest.register_craftitem(thismod .. ":codex_dimond",{
 	description = "Codex Dimond",
 	groups = {metal = 1, thwacky = 2},
 	inventory_image = "dimondomicon.png",
@@ -42,7 +45,7 @@ minetest.register_craftitem("wac:codex_dimond",{
 	end,
 	on_secondary_use = function() end
 })
-minetest.register_craftitem("wac:jagged_flint",{
+minetest.register_craftitem(thismod .. ":jagged_flint",{
 	description = "Jagged Flint Shard",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	inventory_image = "flint.png",
@@ -55,7 +58,7 @@ minetest.register_craftitem("wac:jagged_flint",{
 	on_secondary_use = function()
 	end
 })
-minetest.register_craftitem("wac:bec_de_corbin",{
+minetest.register_craftitem(thismod .. ":bec_de_corbin",{
 	description = "Bec_de_Corbin",
 	groups = {metal = 1, event = 2, thwacky = 2},
 	inventory_image = "bdc.png",
@@ -69,7 +72,7 @@ minetest.register_craftitem("wac:bec_de_corbin",{
 	on_secondary_use = function()
 	end
 })
-minetest.register_craftitem("wac:baseball_bat",{
+minetest.register_craftitem(thismod .. ":baseball_bat",{
 	description = "Ol' Reliable",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	inventory_image = "bbat.png",
@@ -83,11 +86,11 @@ minetest.register_craftitem("wac:baseball_bat",{
 	on_secondary_use = function()
 	end
 })
-minetest.register_craftitem("wac:hostwand",{
+minetest.register_craftitem(thismod .. ":hostwand",{
     description = "Event Host Wand",
 	inventory_image = "hostwand.png"
 })
-minetest.register_craftitem("wac:vampirewhip",{
+minetest.register_craftitem(thismod .. ":vampirewhip",{
     description = "Far Rach",
 	inventory_image = "distancewhip.png",
 	groups = {metal = 1, event = 2, thwacky = 4},
@@ -102,7 +105,7 @@ minetest.register_craftitem("wac:vampirewhip",{
 		minetest.chat_send_all("hi")
 	end
 })
-minetest.register_craftitem("wac:paws",{
+minetest.register_craftitem(thismod .. ":paws",{
 	description = "Paws of the Kittypet",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	inventory_image = "pawpaw.png",

@@ -1,6 +1,7 @@
 local thismod = minetest.get_current_modname()
 local modpath = minetest.get_modpath(thismod)
-wac = {}
+local wac = {}
+rawset(_G, thismod, wac)
 wac.playurns = {}
 wac.attends = {}
 wac.game_create = function(pos)
@@ -32,7 +33,7 @@ dofile(modpath.."/itemreg.lua")
 dofile(modpath.."/tempnodes.lua")
 dofile(modpath.."/quirkcorns.lua")
 
-minetest.register_entity("wac:myentity",{
+minetest.register_entity(thismod .. ":myentity",{
     initial_properties = {
         hp_max = 1,
         physical = true,
