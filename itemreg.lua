@@ -28,10 +28,7 @@ minetest.register_craftitem(thismod .. ":codex_dimond",{
 	wield_image = "dimondomicon.png",
 	on_use = function(_, user, pointed_thing)
 		local pos = user:get_pos()
-		local delrad = minetest.find_nodes_in_area(
-			{x=pos.x-6,y=pos.y-6,z=pos.z-6},
-			{x=pos.x+6,y=pos.y+6,z=pos.z+6},
-			{"group:eggy"})
+		local delrad = wac.find_nodes(pos, {6, 6, 6}, {6, 6, 6}, "group:eggy")
 		if(pointed_thing.under == nil)then
 			if(delrad)then
 				local i = math.random(1,#delrad)

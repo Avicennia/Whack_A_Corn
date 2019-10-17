@@ -113,14 +113,10 @@ minetest.register_chatcommand("board;stop",
 			minetest.chat_send_all("Game Paused!")
 			local player = minetest.get_player_by_name(name)
 			local ppos = player:get_pos()
-			local stat = minetest.find_nodes_in_area(
-				{x=ppos.x-25,y=ppos.y,z=ppos.z-25},
-				{x=ppos.x+25,y=ppos.y+16,z=ppos.z+25},
+			local stat = wac.find_nodes(ppos, {25, 0, 25}, {25, 16, 25},
 				thismod .. ":sadistic_eggcorn")
 			local pstat = stat[1]
-			for _,v in pairs(minetest.find_nodes_in_area(
-				{x=pstat.x-25,y=pstat.y-4,z=pstat.z-25},
-				{x=pstat.x+25,y=pstat.y-20,z=pstat.z+25},
+			for _,v in pairs(wac.find_nodes(pstat, {25, 20, 25}, {25, -4, 25},
 				thismod .. ":resigned_grass"))do
 				minetest.set_node(v,{name = thismod .. ":resigned_grass_inert"})
 			end
@@ -135,14 +131,10 @@ minetest.register_chatcommand("board;start",
 			minetest.chat_send_all("Game Paused!")
 			local player = minetest.get_player_by_name(name)
 			local ppos = player:get_pos()
-			local stat = minetest.find_nodes_in_area(
-				{x=ppos.x-25,y=ppos.y,z=ppos.z-25},
-				{x=ppos.x+25,y=ppos.y+16,z=ppos.z+25},
+			local stat = wac.find_nodes(ppos, {25, 0, 25}, {25, 16, 25},
 				thismod .. ":sadistic_eggcorn")
 			local pstat = stat[1]
-			for _,v in pairs(minetest.find_nodes_in_area(
-				{x=pstat.x-25,y=pstat.y-4,z=pstat.z-25},
-				{x=pstat.x+25,y=pstat.y-20,z=pstat.z+25},
+			for _,v in pairs(wac.find_nodes(pstat, {25, 20, 25}, {25, -4, 35},
 				thismod .. ":resigned_grass_inert"))do
 				minetest.set_node(v,{name = thismod .. ":resigned_grass"})
 			end

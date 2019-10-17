@@ -1,6 +1,20 @@
 local thismod = minetest.get_current_modname()
 local wac = _G[thismod]
 
+wac.find_nodes = function(pos, min, max, ...)
+	min = {
+		x = pos.x - (min.x or min[1] or 0),
+		y = pos.y - (min.y or min[2] or 0),
+		z = pos.z - (min.z or min[3] or 0)
+	}
+	max = {
+		x = pos.x + (max.x or max[1] or 0),
+		y = pos.y + (max.y or max[2] or 0),
+		z = pos.z + (max.z or max[3] or 0)
+	}
+	return minetest.find_nodes_in_area(min, max, ...)
+end
+
 -- Functions, Variables, and supporting shared references are stored here.
 -- Just for the sake of slightly better separation of components.
 

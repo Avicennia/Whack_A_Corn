@@ -17,16 +17,11 @@ minetest.register_node(thismod .. ":sadistic_eggcorn",{
 		wac.game_create(pos)
 		minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z},
 			{name=thismod .. ":sadistic_eggcorn"})
-		wac_s:set_string("gboard",minetest.serialize(
-			minetest.find_nodes_in_area(
-				{x=pos.x-23,y=pos.y,z=pos.z-23},
-				{x=pos.x+23,y=pos.y-15,z=pos.z+23},
-				{name = thismod .. ":resigned_grass"})))
+		local field = wac.find_nodes(pos, {23, 15, 23}, {23, 0, 23},
+			thismod .. ":resigned_grass")
+		wac_s:set_string("gboard",minetest.serialize(field))
 		minetest.remove_node(pos)
-		for _,v in ipairs(minetest.find_nodes_in_area(
-			{x=pos.x-23,y=pos.y,z=pos.z-23},
-			{x=pos.x+23,y=pos.y-15,z=pos.z+23},
-			{name = thismod .. ":resigned_grass"}))do
+		for _,v in ipairs(field)do
 			wac.spewparticles(v,"dev_tex.png")
 		end
 	end

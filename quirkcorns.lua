@@ -55,13 +55,10 @@ wac.register_quirk("petrified", {
 		local pos = vector.round(player:get_pos())
 		local picked = wac.anynode("default:stone", "nc_terrain:stone")
 		local nodes = {}
-		for _, p in pairs(minetest.find_nodes_in_area(
-			{x=pos.x-1,y=pos.y,z=pos.z-1},
-			{x=pos.x+1,y=pos.y+3,z=pos.z+1},
-			{name = "air"})) do
-				if pos.x ~= p.x or pos.z ~= p.z then
-					nodes[#nodes + 1] = {pos = p, orig = "air", temp = picked}
-				end
+		for _, p in pairs(wac.find_nodes(pos, {1, 0, 1}, {1, 3, 1}, "air")) do
+			if pos.x ~= p.x or pos.z ~= p.z then
+				nodes[#nodes + 1] = {pos = p, orig = "air", temp = picked}
+			end
 		end
 		player:set_pos(pos)
 		return wac.tempnodes(3, nodes)
@@ -70,10 +67,7 @@ wac.register_quirk("petrified", {
 
 wac.register_quirk("myscus", {
 	fx = function(_, npos)
-		for _, v in ipairs(minetest.find_nodes_in_area(
-			{x=npos.x-8,y=npos.y,z=npos.z-8},
-			{x=npos.x+8,y=npos.y,z=npos.z+8},
-			"group:eggy")) do
+		for _, v in ipairs(wac.find_nodes(npos, {8, 0, 8}, {8, 0, 8}, "group:eggy")) do
 			minetest.remove_node(v)
 		end
 	end
