@@ -1,28 +1,18 @@
-
-
-
-
-
-
-
-
-
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
 
 local n1 = { name = "air", prob = 0 }
-local n2 = { name = "wac:stone" }
+local n2 = { name = thismod .. ":stone" }
 local n3 = { name = "ignore" }
-local n4 = { name = "wac:resigned_grass" }
+local n4 = { name = thismod .. ":resigned_grass" }
 
 wac.thefield = {
-	yslice_prob = {
-		
-	},
+	yslice_prob = { },
 	size = {
 		y = 23,
 		x = 47,
 		z = 50
-	}
-,
+	},
 	data = {
 n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, 
 n1, n1, n1, n1, n1, n1, n2, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, 

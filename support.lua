@@ -1,21 +1,24 @@
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
+
 --
 --
 --
 
 minetest.register_abm({
 	label = "The Cycle of Egg and Corn Continues",
-	nodenames = {"wac:resigned_grass"},
+	nodenames = {thismod .. ":resigned_grass"},
 	interval = 0.5,
 	chance = 100,
-	action = function(pos, node)
+	action = function(pos)
 		local n = math.random(1,10);
 		if(n >= 1)then
 		minetest.punch_node(pos)
-		else
 		end
-		if(minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name == "wac:victorious_eggcorn")then
+		if(minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
+		== thismod .. ":victorious_eggcorn")then
 			minetest.remove_node({x=pos.x,y=pos.y+1,z=pos.z})
-			minetest.set_node({x=pos.x+1,y=pos.y+1,z=pos.z},{name = "wac:"..wac.array_rand(wac.quirks).."_eggcorn"})
+			minetest.set_node({x=pos.x+1,y=pos.y+1,z=pos.z},{name = thismod .. ":"..wac.array_rand(wac.quirks).."_eggcorn"})
 		end
 	end
 
@@ -25,8 +28,8 @@ minetest.register_abm({
 	nodenames = {"group:eggy"},
 	interval = 2.0,
 	chance = 4,
-	action = function(pos, node)
-		if(minetest.get_node({x=pos.x,y=pos.y,z=pos.z}).name == "wac:victorious_eggcorn")then
+	action = function(pos)
+		if(minetest.get_node({x=pos.x,y=pos.y,z=pos.z}).name == thismod .. ":victorious_eggcorn")then
 			minetest.remove_node({x=pos.x,y=pos.y,z=pos.z})
 			minetest.punch_node({x=pos.x+1,y=pos.y,z=pos.z})
 			minetest.punch_node({x=pos.x-1,y=pos.y,z=pos.z})
@@ -38,10 +41,10 @@ minetest.register_abm({
 })
 minetest.register_abm({
 	label = "indicator",
-	nodenames = {"wac:sadistic_eggcorn"},
+	nodenames = {thismod .. ":sadistic_eggcorn"},
 	interval = 3.0,
 	chance = 1,
-	action = function(pos, node)	
+	action = function()
 		wac.boundchk(wac.playurns)
 		wac.ttris(wac.attends,wac.boundchk(wac.playurns))
 		minetest.chat_send_all(minetest.serialize(wac.attends))
@@ -57,7 +60,7 @@ minetest.register_abm({
 	nodenames = {"group:eggy"},
 	interval = 2.0,
 	chance = 40,
-	action = function(pos, node)
+	action = function(pos)
 		minetest.remove_node(pos)
 	end
 
@@ -66,9 +69,9 @@ minetest.register_abm({
 
 minetest.register_chatcommand("ckscore",
 	{
-		description = "Check player scores", 
+		description = "Check player scores",
 		privs = {interact=true},
-		func = function(name, param)
+		func = function(name)
 			for _,v in ipairs(wac.attends)do
 				local pmeta = v and minetest.get_player_by_name(v):get_meta()
 				minetest.chat_send_player(name,v)
@@ -81,18 +84,18 @@ minetest.register_chatcommand("ckscore",
 )
 minetest.register_chatcommand("ckattends",
 	{
-		description = "Check current attendees", 
+		description = "Check current attendees",
 		privs = {interact=true},
-		func = function(name, param)
+		func = function()
 			minetest.chat_send_all(minetest.serialize(wac.attends))
 		end
 	}
 )
 minetest.register_chatcommand("score;rs;all",
 	{
-		description = "Sets all scores to zero", 
+		description = "Sets all scores to zero",
 		privs = {interact=true},
-		func = function(name, param)
+		func = function()
 			minetest.chat_send_all("All scores reset!")
 			for _,v in pairs(wac.playurns)do
 				local player = minetest.get_player_by_name(v)
@@ -104,32 +107,36 @@ minetest.register_chatcommand("score;rs;all",
 )
 minetest.register_chatcommand("board;stop",
 	{
-		description = "Stops eggcorn spawning on board", 
+		description = "Stops eggcorn spawning on board",
 		privs = {interact=true},
-		func = function(name, param)
+		func = function(name)
 			minetest.chat_send_all("Game Paused!")
 			local player = minetest.get_player_by_name(name)
 			local ppos = player:get_pos()
-			local stat = minetest.find_nodes_in_area({x=ppos.x-25,y=ppos.y,z=ppos.z-25},{x=ppos.x+25,y=ppos.y+16,z=ppos.z+25},"wac:sadistic_eggcorn")
+			local stat = wac.find_nodes(ppos, {25, 0, 25}, {25, 16, 25},
+				thismod .. ":sadistic_eggcorn")
 			local pstat = stat[1]
-			for _,v in pairs(minetest.find_nodes_in_area({x=pstat.x-25,y=pstat.y-4,z=pstat.z-25},{x=pstat.x+25,y=pstat.y-20,z=pstat.z+25},"wac:resigned_grass"))do
-				minetest.set_node(v,{name = "wac:resigned_grass_inert"})
+			for _,v in pairs(wac.find_nodes(pstat, {25, 20, 25}, {25, -4, 25},
+				thismod .. ":resigned_grass"))do
+				minetest.set_node(v,{name = thismod .. ":resigned_grass_inert"})
 			end
 		end
 	}
 )
 minetest.register_chatcommand("board;start",
 	{
-		description = "Starts eggcorn spawning on board", 
+		description = "Starts eggcorn spawning on board",
 		privs = {interact=true},
-		func = function(name, param)
+		func = function(name)
 			minetest.chat_send_all("Game Paused!")
 			local player = minetest.get_player_by_name(name)
 			local ppos = player:get_pos()
-			local stat = minetest.find_nodes_in_area({x=ppos.x-25,y=ppos.y,z=ppos.z-25},{x=ppos.x+25,y=ppos.y+16,z=ppos.z+25},"wac:sadistic_eggcorn")
+			local stat = wac.find_nodes(ppos, {25, 0, 25}, {25, 16, 25},
+				thismod .. ":sadistic_eggcorn")
 			local pstat = stat[1]
-			for _,v in pairs(minetest.find_nodes_in_area({x=pstat.x-25,y=pstat.y-4,z=pstat.z-25},{x=pstat.x+25,y=pstat.y-20,z=pstat.z+25},"wac:resigned_grass_inert"))do
-				minetest.set_node(v,{name = "wac:resigned_grass"})
+			for _,v in pairs(wac.find_nodes(pstat, {25, 20, 25}, {25, -4, 35},
+				thismod .. ":resigned_grass_inert"))do
+				minetest.set_node(v,{name = thismod .. ":resigned_grass"})
 			end
 		end
 	}

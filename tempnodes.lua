@@ -1,4 +1,7 @@
-minetest.register_entity("wac:reverter", {
+local thismod = minetest.get_current_modname()
+local wac = _G[thismod]
+
+minetest.register_entity(thismod .. ":reverter", {
 	initial_properties = {
 		hp_max = 1,
 		physical = false,
@@ -44,6 +47,6 @@ function wac.tempnodes(ttl, list)
 	end
 	if div < 1 then return end
 	centroid = vector.multiply(centroid, 1 / div)
-	local ent = minetest.add_entity(centroid, "wac:reverter"):get_luaentity()
+	local ent = minetest.add_entity(centroid, thismod .. ":reverter"):get_luaentity()
 	ent.data = {ttl = ttl, nodes = did}
 end
