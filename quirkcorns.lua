@@ -5,7 +5,8 @@ wac.quirks = wac.quirks or {}
 
 function wac.register_quirk(name, def)
 	def = def or {}
-	local desc = def.description or (name .. "Eggcorn")
+	local desc = def.description or (name:sub(1, 1):upper()
+		.. name:sub(2) .. " Eggcorn")
 	local tiles = { def.tile or (name .. "_eggcorn.png") }
 	wac.quirks[#wac.quirks + 1] = name
 
