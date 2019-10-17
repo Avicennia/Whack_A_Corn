@@ -224,7 +224,7 @@ end
 
 --	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--
 
-function wac.smash(pname, _, npos)
+function wac.smash(pname, npos)
 	local node = npos and minetest.get_node(npos)
 	local nname = node.name
 	local def = nname and minetest.registered_nodes[nname]
@@ -233,9 +233,6 @@ function wac.smash(pname, _, npos)
 
 	local value = quirk.value or 1
 	if type(value) == "function" then value = value(pname, npos) end
-
-	minetest.node_punch(npos, node, minetest.get_player_by_name(pname),
-		{type = "node", above = vector.add(npos, {x = 0, y = 1, z = 0}), under = npos})
 
 	local player = minetest.get_player_by_name(pname)
 	local pmeta = player:get_meta()
