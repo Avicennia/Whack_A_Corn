@@ -29,7 +29,7 @@ minetest.register_node(thismod .. ":sadistic_eggcorn",{
 --Fence: Designates area where the game is conducted.
 minetest.register_node(thismod .. ":fence",{
 	description = "Subjugatory Fence",
-	tiles = {"subjugatory_fence.png"},
+	tiles = {"stone.png"},
 	groups = {choppy = 3},
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -43,7 +43,11 @@ minetest.register_node(thismod .. ":fence",{
 minetest.register_node(thismod .. ":resigned_grass",{
 	description = "Resigned Grass",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
-	tiles = {"resigned_grass_top.png"},
+	tiles = {
+		"resigned_grass_top.png",
+		"stone.png",
+		"resigned_grass_overlay.png"
+	},
 	sounds = {footstep = {name = "resignedgrasswalk"}},
 	on_punch = function(pos)
 		math.random(0,10);math.random(0,10);
@@ -117,7 +121,7 @@ minetest.register_node(thismod .. ":deaf_glass", {
 
 minetest.register_node(thismod .. ":dev", {
 		tiles = {
-			"nc_tree_log.png",
+			"dev_tex.png",
 		},
 		drawtype = "nodebox",
 		paramtype = "light",

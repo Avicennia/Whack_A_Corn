@@ -105,7 +105,7 @@ minetest.register_craftitem(thismod .. ":vampirewhip",{
 minetest.register_craftitem(thismod .. ":paws",{
 	description = "Paws of the Kittypet",
 	groups = {metal = 1, event = 2, thwacky = 3},
-	inventory_image = "pawpaw.png",
+	inventory_image = "trinket_rescue.png",
 	wield_image = "trinket_rescue.png",
 	on_use = function(_, user, pointed_thing)
 		if(pointed_thing.under == nil)then
