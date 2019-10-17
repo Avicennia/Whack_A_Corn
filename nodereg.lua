@@ -2,7 +2,9 @@
 --
 --
 
---Sadistic eggcorn God: Game starting node 
+local wac_s = minetest.get_mod_storage()
+
+--Sadistic eggcorn God: Game starting node
 minetest.register_node("wac:sadistic_eggcorn",{
 	description = "Sadistic Eggcorn",
 	drawtype = "plantlike",
@@ -12,9 +14,15 @@ minetest.register_node("wac:sadistic_eggcorn",{
 		wac.game_create(pos)
 		minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z}, {name="wac:sadistic_eggcorn"})
 		wac_s:set_string("gboard",minetest.serialize(
-			minetest.find_nodes_in_area({x=pos.x-23,y=pos.y,z=pos.z-23},{x=pos.x+23,y=pos.y-15,z=pos.z+23},{name = "wac:resigned_grass"})))
+			minetest.find_nodes_in_area(
+				{x=pos.x-23,y=pos.y,z=pos.z-23},
+				{x=pos.x+23,y=pos.y-15,z=pos.z+23},
+				{name = "wac:resigned_grass"})))
 		minetest.remove_node(pos)
-		for k,v in ipairs(minetest.find_nodes_in_area({x=pos.x-23,y=pos.y,z=pos.z-23},{x=pos.x+23,y=pos.y-15,z=pos.z+23},{name = "wac:resigned_grass"}))do
+		for _,v in ipairs(minetest.find_nodes_in_area(
+			{x=pos.x-23,y=pos.y,z=pos.z-23},
+			{x=pos.x+23,y=pos.y-15,z=pos.z+23},
+			{name = "wac:resigned_grass"}))do
 			wac.spewparticles(v,"dev_tex.png")
 		end
 	end
@@ -39,32 +47,28 @@ minetest.register_node("wac:resigned_grass",{
 	tiles = {"resigned_grass_top.png"},
 	sounds = {footstep = {name = "resignedgrasswalk"}},
 	on_punch = function(pos)
-		local pup = {x=pos.x,y=pos.y+1,z=pos.z}
 		math.random(0,10);math.random(0,10);
 		local num = math.random(0,10)
 		if(num >=4)then
 		local timer = minetest.get_node_timer(pos)
 		timer:start(0.5)
-		else
 		end
 	end,
 	 on_timer = function(pos)
 		local pup = {x=pos.x,y=pos.y+1,z=pos.z}
 		if(minetest.get_node(pup).name == "air")then
 		minetest.set_node(pup,{name = "wac:"..wac.array_rand(wac.quirks).."_eggcorn"})
-		else 
 	 end
 	end
 })
 minetest.register_node("wac:resigned_grass_inert",{
 	description = "Resigned Grass",
-	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
+	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, pseudoeggy = 2},
 	tiles = {"resigned_grass_top.png"},
-	groups = {pseudoeggy = 2}
 })
 minetest.register_node("wac:smashed_egg", {
 	description = "Smashed Eggcorn",
-	groups = {choppy = 1},
+	groups = {choppy = 1, eggy = 2},
 	tiles = {"hashed_eggcorn.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -81,7 +85,6 @@ minetest.register_node("wac:smashed_egg", {
 			{0.3125, -0.5, 0, 0.4375, -0.4375, 0.0625}, -- NodeBox10
 		}
 	},
-	groups = {eggy = 2}
 })
 minetest.register_node("wac:deaf_glass", {
     description = "Glass",
@@ -90,7 +93,7 @@ minetest.register_node("wac:deaf_glass", {
     inventory_image = minetest.inventorycube("deaf_glass.png"),
 	paramtype = "light",
 	pointable = false,
-    sunlight_propagates = true, 
+    sunlight_propagates = true,
 	groups = {cracky = 3, oddly_breakable_by_hand = 3}
 })
 --[[minetest.register_node("wac:subjugatory_fpost", {

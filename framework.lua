@@ -5,7 +5,7 @@ wac.array_rand = function(t)
 	math.random(1,#t);math.random(1,#t);local res = math.random(1,#t)
 	return t[res]
 end
---	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	
+--	--	--	--	--	--	PARTICLES	--	--	--	--	--	--
 wac.spewparticles = function(pos,tex)
 	minetest.add_particlespawner({
 		amount = 4,
@@ -29,31 +29,31 @@ wac.spewparticles = function(pos,tex)
 end
 wac.dimond_focused_lazer = function(pos,tex)
 	if(pos)then
-	minetest.add_particlespawner({
-		amount = 29,
-		time = 1,
-		minpos = {x=pos.x, y=pos.y+10, z=pos.z},
-		maxpos = {x=pos.x, y=pos.y-1, z=pos.z},
-		minvel = {x=0.01, y=0, z=0.01},
-		maxvel = {x=0.02, y=0, z=0.02},
-		minacc = {x=0, y=0, z=0},
-		maxacc = {x=0.1, y=0.4, z=0.1},
-		minexptime = 0.1,
-		maxexptime = 0.5,
-		minsize = 40,
-		maxsize = 40,
-		collisiondetection = false,
-		collision_removal = false,
-		vertical = true,
-		texture = tex,
-		glow = 2
-	})
-	minetest.sound_play({name ="lbeam"},{
-		pos = pos,
-		gain = 50.0, -- default
-		max_hear_distance = 32,
-	})
-else end
+		minetest.add_particlespawner({
+			amount = 29,
+			time = 1,
+			minpos = {x=pos.x, y=pos.y+10, z=pos.z},
+			maxpos = {x=pos.x, y=pos.y-1, z=pos.z},
+			minvel = {x=0.01, y=0, z=0.01},
+			maxvel = {x=0.02, y=0, z=0.02},
+			minacc = {x=0, y=0, z=0},
+			maxacc = {x=0.1, y=0.4, z=0.1},
+			minexptime = 0.1,
+			maxexptime = 0.5,
+			minsize = 40,
+			maxsize = 40,
+			collisiondetection = false,
+			collision_removal = false,
+			vertical = true,
+			texture = tex,
+			glow = 2
+		})
+		minetest.sound_play({name ="lbeam"},{
+			pos = pos,
+			gain = 50.0, -- default
+			max_hear_distance = 32,
+		})
+	end
 end
 wac.warr_ham = function(pos)
 	minetest.sound_play({name ="warrhammerwave"},{
@@ -95,11 +95,11 @@ end
 
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
-wac.bookban = function(tab,node)
-	
+wac.bookban = function()
+
 end
 
---	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
+--	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--
 wac.boundchk = function(names)
 	-- ^ Function to check for players that meet criteria to be considered "present" in the play area.
 	-- Two tables, one to store positions of players, and one to store the name of the node beneath them;
@@ -108,9 +108,9 @@ wac.boundchk = function(names)
 	local post = {}
 	local post_nunder = {}
 	local nb = {}
-	for _,v in ipairs(names)do 
+	for _,v in ipairs(names)do
 		-- Not explicitly visible here is that names and positions should be synchronized
-		-- with the numerical order of the array storing player names upon login in [init.lua]. 
+		-- with the numerical order of the array storing player names upon login in [init.lua].
 		local vp = minetest.get_player_by_name(v):get_pos()
 		local e = minetest.get_node({x=vp.x,y=vp.y-1,z=vp.z}).name
 		table.insert(post,vp)
@@ -134,10 +134,11 @@ wac.boundchk = function(names)
 	end
 	return nb -- Returns a table containing an index and name for every player with [wac:resigned_grass] under their feet.
 end
-wac.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to every value indexed in table <tab>.
+wac.nameiter = function(name,tab) -- Returns a table of BOOL values after comparing "name" to
+                                  -- every value indexed in table <tab>.
 	local tablerv = {}
 	for n=1, #tab, 1 do
-		if(tab[n] == name)then 
+		if(tab[n] == name)then
 			table.insert(tablerv,true)
 		else table.insert(tablerv,false)
 		end
@@ -145,7 +146,7 @@ wac.nameiter = function(name,tab) -- Returns a table of BOOL values after compar
 	return tablerv
 end
 wac.tabcomp = function(tl,td)
-	local rv = 0 -- 
+	local rv = 0
 	if(#td/2 == #tl)then
 		rv = "equal"
 	elseif(#td/2 > #tl)then
@@ -153,7 +154,7 @@ wac.tabcomp = function(tl,td)
 	elseif(#td/2 < #tl)then
 		rv = "smaller"
 	else rv[1] = "und" end
-return rv 
+return rv
 end
 wac.tappend = function(tl,td)
 	for n=2, #td, 2 do
@@ -161,12 +162,11 @@ wac.tappend = function(tl,td)
 	end
 end
 wac.ttris = function(tl,td) -- Checks for name duplicates before adding the names from a table to a legacy table [tl]
-	n = 0
-	for k,v in ipairs(td) do	
+	local n = 0
+	for _,v in ipairs(td) do
 		if(v ~= tl[n] and type(v) == "string")then
 			n = n + 1
-			tl[n] = v 
-		else 
+			tl[n] = v
 		end
 	end
 end
@@ -186,16 +186,15 @@ function wac.dupchk(name,tab)
 	for _,v in ipairs(tab) do
 		if(v == name and rv[2] == 0)then
 			rv[2] = rv[2] + 1
-		elseif(v == name and rv[2] > 1)then 
+		elseif(v == name and rv[2] > 1)then
 			rv[2] = rv[2] + 1; rv[3] = "yellow"
-		else 
 		end
 	end
 	return rv
 end
 function wac.duptrunc(tn,tl)
 	if(tn[2] > 1 and tn[3] == "yellow")then
-		for n = 1, tn[2]-1 do
+		for _ = 1, tn[2]-1 do
 			for k,v in ipairs(tl)do
 				if(v == tn[1])then
 					table.remove(tl,k)
@@ -206,9 +205,9 @@ function wac.duptrunc(tn,tl)
 	end
 end
 
---	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--	
+--	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--
 
-function wac.smash(pname, ppos, npos)
+function wac.smash(pname, _, npos)
 	local nname = npos and minetest.get_node(npos).name
 	local def = nname and minetest.registered_nodes[nname]
 	local quirk = def and def.wac_quirk
