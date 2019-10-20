@@ -1,26 +1,16 @@
 local thismod = minetest.get_current_modname()
 local wac = _G[thismod]
 
-minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
-	if not puncher:is_player() then return end
-	local wielded = puncher:get_wielded_item()
-	local def = minetest.registered_items[wielded:get_name()]
-	if (not def) or (not def.wac_smasher) then return end
-	local hits = def.wac_smash_targets
-		and def.wac_smash_targets(pos, node, puncher, pointed_thing)
-		or {pos}
-	for _, p in pairs(hits) do
-		wac.smash(puncher:get_player_name(), p)
-		if def.wac_smash_quirk then
-			def.wac_smash_quirk(p, pos, node, puncher, pointed_thing)
-		end
-	end
-end)
-
 function wac.register_smasher(name, def)
 	def.wac_smasher = true
 	def.on_use = def.on_use or function(_, user, pointed_thing)
-		return wac.jump_whack(user, pointed_thing)
+		if pointed_thing.type == "node" then
+			return minetest.node_punch(pointed_thing.under,
+				minetest.get_node(pointed_thing.under),
+				user, pointed_thing)
+		elseif pointed_thing.type == "object" then
+			return wac.jump_whack(user, pointed_thing)
+		end
 	end
 	return minetest.register_craftitem(name, def)
 end
