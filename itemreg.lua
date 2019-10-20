@@ -3,15 +3,29 @@ local wac = _G[thismod]
 
 function wac.register_smasher(name, def)
 	def.wac_smasher = true
+
+	def.wac_smash_targets = def.wac_smash_targets
+	or function(func, lua, obj) return func(lua, obj) end
+
 	def.on_use = def.on_use or function(_, user, pointed_thing)
 		if pointed_thing.type == "node" then
 			return minetest.node_punch(pointed_thing.under,
 				minetest.get_node(pointed_thing.under),
 				user, pointed_thing)
 		elseif pointed_thing.type == "object" then
-			return wac.jump_whack(user, pointed_thing)
+			def.wac_smash_targets(function(obj)
+				local opos = obj:get_pos()
+				local function helper(...)
+					if def.wac_smash_quirk then
+						def.wac_smash_quirk(opos)
+					end
+					return ...
+				end
+				return helper(wac.jump_whack(user, obj))
+			end, pointed_thing.ref)
 		end
 	end
+
 	return minetest.register_craftitem(name, def)
 end
 
@@ -32,11 +46,15 @@ wac.register_smasher(thismod .. ":codex_dimond",{
 	groups = {metal = 1, thwacky = 2},
 	inventory_image = "dimondomicon.png",
 	wield_image = "dimondomicon.png",
-	wac_smash_targets = function(pos)
-		local picked = {pos}
-		local delrad = wac.find_nodes(pos, {6, 6, 6}, {6, 6, 6}, "group:eggy")
-		if #delrad > 0 then picked[#picked + 1] = delrad[math.random(1, #delrad)] end
-		return picked
+	wac_smash_targets = function(func, obj)
+		if not func(obj) then return end
+		local delrad = {}
+		wac.find_corns(obj:get_pos(), 6, function(_, xobj)
+			delrad[#delrad + 1] = xobj
+		end)
+		if #delrad < 1 then return end
+		local pick = delrad[math.random(1, #delrad)]
+		func(pick)
 	end,
 	wac_smash_quirk = function(pos)
 		wac.dimond_focused_lazer(pos,"banzer.png")

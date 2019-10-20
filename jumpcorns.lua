@@ -54,15 +54,12 @@ function wac.jump_smash(lua, obj)
 	obj:set_yaw(0)
 end
 
-function wac.jump_whack(user, pointed_thing)
-	if pointed_thing.type ~= "object" then return end
-	local obj = pointed_thing.ref
+function wac.jump_whack(user, obj)
 	local lua = obj and obj.get_luaentity and obj:get_luaentity()
 	local corn = lua and lua.jumpcorn
 	local ndef = corn and minetest.registered_items[corn]
 	local quirk = ndef and ndef.wac_quirk
 	if not quirk then return end
-
 	local npos = obj:get_pos()
 
 	if user then
@@ -80,6 +77,8 @@ function wac.jump_whack(user, pointed_thing)
 	wac.jump_smash(lua, obj)
 
 	if quirk.fx then quirk.fx(user, npos) end
+
+	return true
 end
 
 function wac.find_corns(pos, radius, each, ...)
