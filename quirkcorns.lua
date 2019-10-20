@@ -67,12 +67,6 @@ wac.register_quirk("victorious", {
 		wac.find_corns(obj:get_pos(), 2, function(lua, pobj)
 			if pobj ~= obj then return wac.jump_smash(lua, pobj) end
 		end)
-		for _, o in pairs(minetest.get_objects_inside_radius(obj:get_pos(), 2)) do
-			if o ~= obj then
-				local lua = o.get_luaentity and o:get_luaentity()
-				if lua and lua.jumpcorn then wac.jump_smash(lua, o) end
-			end
-		end
 	end
 })
 

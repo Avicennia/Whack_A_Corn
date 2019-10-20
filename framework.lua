@@ -100,6 +100,36 @@ wac.tumbleparticles = function(pos,tex)
 	})
 end
 
+wac.scoreparticles = function(pos, score)
+	score = tostring(score)
+	local scale = #score + 1
+	local txr = "[combine:" .. (scale * 8) .. "x" .. (scale * 6)
+	for i = 0, #score do
+		local j = (i == 0) and 0 or (tonumber(score:sub(i, i)) + 1)
+		txr = txr .. ":" .. (i * 8) .. "," .. (#score * 3)
+			.. "=wac_numeric.png\\^[verticalframe\\:11\\:" .. j
+	end
+	minetest.add_particlespawner({
+		amount = 25,
+		time = 0.1,
+		minpos = {x=pos.x-2, y=pos.y, z=pos.z-2},
+		maxpos = {x=pos.x+2, y=pos.y+2, z=pos.z+2},
+		minvel = {x=0, y=0, z=0},
+		maxvel = {x=0, y=0, z=0},
+		minacc = {x=0, y=0.5, z=0},
+		maxacc = {x=0.1, y=1, z=0.1},
+		minexptime = 0.3,
+		maxexptime = 0.6,
+		minsize = 2 * scale,
+		maxsize = 2 * scale,
+		collisiondetection = false,
+		collision_removal = false,
+		vertical = false,
+		texture = txr,
+		glow = 2
+	})
+end
+
 wac.anynode = function(...)
 	local t = {...}
 	for _, name in ipairs(t) do
