@@ -20,9 +20,7 @@ end)
 function wac.register_smasher(name, def)
 	def.wac_smasher = true
 	def.on_use = def.on_use or function(_, user, pointed_thing)
-		if pointed_thing.type ~= "node" or not pointed_thing.under then return end
-		minetest.node_punch(pointed_thing.under, minetest.get_node(pointed_thing.under),
-			user, pointed_thing)
+		return wac.jump_whack(user, pointed_thing)
 	end
 	return minetest.register_craftitem(name, def)
 end

@@ -223,22 +223,3 @@ function wac.duptrunc(tn,tl)
 end
 
 --	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--
-
-function wac.smash(pname, npos)
-	local node = npos and minetest.get_node(npos)
-	local nname = node.name
-	local def = nname and minetest.registered_nodes[nname]
-	local quirk = def and def.wac_quirk
-	if not quirk then return end
-
-	local value = quirk.value or 1
-	if type(value) == "function" then value = value(pname, npos) end
-
-	local player = minetest.get_player_by_name(pname)
-	local pmeta = player:get_meta()
-	pmeta:set_int("score", pmeta:get_int("score")+value)
-
-	minetest.set_node(npos,{name = thismod .. ":smashed_egg"})
-
-	if quirk.fx then quirk.fx(pname, npos) end
-end

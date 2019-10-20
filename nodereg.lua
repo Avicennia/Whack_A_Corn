@@ -72,10 +72,11 @@ minetest.register_node(thismod .. ":resigned_grass_inert",{
 })
 minetest.register_node(thismod .. ":smashed_egg", {
 	description = "Smashed Eggcorn",
-	groups = {choppy = 1, eggy = 2},
+	groups = {choppy = 1, eggy = 2, falling_node = 1},
 	tiles = {"hashed_eggcorn.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
+	walkable = false,
 	node_box = {
 		type = "fixed",
 		fixed = {

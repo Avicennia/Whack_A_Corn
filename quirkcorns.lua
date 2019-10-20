@@ -7,27 +7,13 @@ function wac.register_quirk(name, def)
 	def = def or {}
 	local desc = def.description or (name:sub(1, 1):upper()
 		.. name:sub(2) .. " Eggcorn")
-	local tiles = { def.tile or (name .. "_eggcorn.png") }
+	local tile = def.tile or (name .. "_eggcorn.png")
 	wac.quirks[#wac.quirks + 1] = name
 
-	minetest.register_node(thismod .. ":" .. name .. "_eggcorn", {
+	minetest.register_craftitem(thismod .. ":" .. name .. "_eggcorn", {
 		description = desc,
-		drawtype = "plantlike",
-		tiles = tiles,
-		paramtype = "light",
-		groups = {thumpy = 1, eggy = 2},
-		on_construct = function(pos)
-			return minetest.get_node_timer(pos):start(1)
-		end,
-		on_timer = minetest.remove_node,
+		inventory_image = tile,
 		wac_quirk = def
-	})
-	minetest.register_node(thismod .. ":" .. name .. "_eggcorn_inert", {
-		description = desc,
-		drawtype = "plantlike",
-		tiles = tiles,
-		paramtype = "light",
-		groups = {pseudoeggy = 4}
 	})
 end
 
@@ -37,8 +23,9 @@ wac.register_quirk("simple", {
 
 wac.register_quirk("melancholy", {
 	value = 2,
-	fx = function(pname)
-		local pos = minetest.get_player_by_name(pname):get_pos()
+	fx = function(player)
+		if not player then return end
+		local pos = player:get_pos()
 		return wac.tempnodes(4, {{
 			pos = {x = pos.x, y = pos.y + 3, z = pos.z},
 			orig = "air",
@@ -51,8 +38,8 @@ wac.register_quirk("cheerful", { value = 2 })
 
 wac.register_quirk("petrified", {
 	value = 2,
-	fx = function(pname)
-		local player = minetest.get_player_by_name(pname)
+	fx = function(player)
+		if not player then return end
 		local pos = vector.round(player:get_pos())
 		local picked = wac.anynode("default:stone", "nc_terrain:stone")
 		local nodes = {}
@@ -68,15 +55,25 @@ wac.register_quirk("petrified", {
 
 wac.register_quirk("myscus", {
 	fx = function(_, npos)
-		for _, v in ipairs(wac.find_nodes(npos, {8, 0, 8}, {8, 0, 8}, "group:eggy")) do
-			minetest.remove_node(v)
-		end
+		wac.find_corns(npos, 8, wac.jump_smash)
 	end
 })
 
 wac.register_quirk("victorious", {
 	value = 4,
-	tile = "triumphant_eggcorn.png"
+	tile = "triumphant_eggcorn.png",
+	tick = function (self)
+		local obj = self.object
+		wac.find_corns(obj:get_pos(), 2, function(lua, pobj)
+			if pobj ~= obj then return wac.jump_smash(lua, pobj) end
+		end)
+		for _, o in pairs(minetest.get_objects_inside_radius(obj:get_pos(), 2)) do
+			if o ~= obj then
+				local lua = o.get_luaentity and o:get_luaentity()
+				if lua and lua.jumpcorn then wac.jump_smash(lua, o) end
+			end
+		end
+	end
 })
 
 wac.register_quirk("fruity", {

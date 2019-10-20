@@ -6,40 +6,6 @@ local wac = _G[thismod]
 --
 
 minetest.register_abm({
-	label = "The Cycle of Egg and Corn Continues",
-	nodenames = {thismod .. ":resigned_grass"},
-	interval = 0.5,
-	chance = 100,
-	action = function(pos)
-		local n = math.random(1,10);
-		if(n >= 1)then
-		minetest.punch_node(pos)
-		end
-		if(minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
-		== thismod .. ":victorious_eggcorn")then
-			minetest.remove_node({x=pos.x,y=pos.y+1,z=pos.z})
-			minetest.set_node({x=pos.x+1,y=pos.y+1,z=pos.z},{name = thismod .. ":"..wac.array_rand(wac.quirks).."_eggcorn"})
-		end
-	end
-
-})
-minetest.register_abm({
-	label = "To bring eggs again",
-	nodenames = {"group:eggy"},
-	interval = 2.0,
-	chance = 4,
-	action = function(pos)
-		if(minetest.get_node({x=pos.x,y=pos.y,z=pos.z}).name == thismod .. ":victorious_eggcorn")then
-			minetest.remove_node({x=pos.x,y=pos.y,z=pos.z})
-			minetest.punch_node({x=pos.x+1,y=pos.y,z=pos.z})
-			minetest.punch_node({x=pos.x-1,y=pos.y,z=pos.z})
-			minetest.punch_node({x=pos.x,y=pos.y,z=pos.z+1})
-			minetest.punch_node({x=pos.x,y=pos.y,z=pos.z-1})
-		end
-	end
-
-})
-minetest.register_abm({
 	label = "indicator",
 	nodenames = {thismod .. ":sadistic_eggcorn"},
 	interval = 3.0,
