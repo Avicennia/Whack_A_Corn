@@ -5,12 +5,12 @@ minetest.register_entity(thismod .. ":jumpcorn", {
 	on_activate = function(self, data)
 		self.jumpcorn = data
 		local obj = self.object
-		obj:set_velocity({x = 0, y = 5, z = 0})
+		obj:set_velocity({x = 0, y = 6.5, z = 0})
 		obj:set_acceleration({x = 0, y = -8, z = 0})
 		obj:set_yaw(math.random() * math.pi * 2)
 		obj:set_properties({
 			hp_max = 1,
-			physical = true,
+			physical = false,
 			collide_with_objects = false,
 			collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 			visual = "wielditem",
@@ -20,7 +20,8 @@ minetest.register_entity(thismod .. ":jumpcorn", {
 			initial_sprite_basepos = {x = 0, y = 0},
 			is_visible = true,
 			static_save = false,
-			automatic_rotate = (math.random() - 0.5) * 10
+			automatic_rotate = (math.random() - 0.5) * 10,
+			glow = -1
 		})
 		local def = minetest.registered_items[data]
 		local quirk = def and def.wac_quirk
@@ -28,18 +29,24 @@ minetest.register_entity(thismod .. ":jumpcorn", {
 	end,
 	on_step = function(self, dtime)
 		if self.wac_tick then self:wac_tick(dtime) end
+
 		local vel = self.object:get_velocity()
 		if vel.y > 0 then return end
+
 		local pos = self.object:get_pos()
-		pos.y = pos.y - 0.51
+		if self.jumpcorn then pos.y = pos.y + 0.5 end
 		local node = minetest.get_node(pos)
-		if node.name == "air" then return end
+		local def = minetest.registered_nodes[node.name]
+		if def and not def.walkable then return end
+
 		if self.jumpcorn then return self.object:remove() end
-		pos.y = pos.y + 0.51
+
+		pos.y = pos.y + 0.5
 		node = minetest.get_node(pos)
 		if node.name == "air" then
 			minetest.set_node(pos, {name = thismod .. ":smashed_egg"})
 		end
+
 		return self.object:remove()
 	end
 })
@@ -94,7 +101,6 @@ minetest.register_abm({
 	interval = 1,
 	chance = 100,
 	action = function(pos)
-		pos.y = pos.y + 1
 		return minetest.after(math.random(), function()
 			return minetest.add_entity(pos, thismod .. ":jumpcorn",
 				thismod .. ":" .. wac.quirks[math.random(1, #wac.quirks)]
