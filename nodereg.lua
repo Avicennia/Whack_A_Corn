@@ -48,22 +48,7 @@ minetest.register_node(thismod .. ":resigned_grass",{
 		"stone.png",
 		"resigned_grass_overlay.png"
 	},
-	sounds = {footstep = {name = "resignedgrasswalk"}},
-	on_punch = function(pos)
-		math.random(0,10);math.random(0,10);
-		local num = math.random(0,10)
-		if(num >=4)then
-		local timer = minetest.get_node_timer(pos)
-		timer:start(0.5)
-		end
-	end,
-	 on_timer = function(pos)
-		local pup = {x=pos.x,y=pos.y+1,z=pos.z}
-		if(minetest.get_node(pup).name == "air")then
-		minetest.set_node(pup,{name = thismod .. ":"..
-			wac.array_rand(wac.quirks).."_eggcorn"})
-	 end
-	end
+	sounds = {footstep = {name = "resignedgrasswalk"}}
 })
 minetest.register_node(thismod .. ":resigned_grass_inert",{
 	description = "Resigned Grass",
@@ -72,10 +57,11 @@ minetest.register_node(thismod .. ":resigned_grass_inert",{
 })
 minetest.register_node(thismod .. ":smashed_egg", {
 	description = "Smashed Eggcorn",
-	groups = {choppy = 1, eggy = 2},
+	groups = {choppy = 1, eggy = 2, falling_node = 1},
 	tiles = {"hashed_eggcorn.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
+	walkable = false,
 	node_box = {
 		type = "fixed",
 		fixed = {

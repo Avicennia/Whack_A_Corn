@@ -32,17 +32,4 @@ dofile(modpath.."/nodereg.lua")
 dofile(modpath.."/itemreg.lua")
 dofile(modpath.."/tempnodes.lua")
 dofile(modpath.."/quirkcorns.lua")
-
-minetest.register_entity(thismod .. ":myentity",{
-    initial_properties = {
-        hp_max = 1,
-        physical = true,
-        collide_with_objects = false,
-        collisionbox = {-0.3, -0.3, -0.3, 0.3, 0.3, 0.3},
-        visual = "upright_sprite",
-        visual_size = {x = 0.4, y = 0.4},
-        textures = {"bdc.png"},
-        spritediv = {x = 1, y = 1},
-        initial_sprite_basepos = {x = 0.5, y = 1.5},
-    },
-})
+dofile(modpath.."/jumpcorns.lua")
