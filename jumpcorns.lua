@@ -75,6 +75,7 @@ function wac.jump_whack(user, pointed_thing)
 
 		local pmeta = user:get_meta()
 		pmeta:set_int("score", pmeta:get_int("score")+value)
+		wac.scoreparticles(npos, value)
 	end
 
 	wac.jump_smash(lua, obj)
