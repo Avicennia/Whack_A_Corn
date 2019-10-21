@@ -16,8 +16,15 @@ minetest.register_abm({
 		minetest.chat_send_all(minetest.serialize(wac.attends))
 		for _,v in pairs(wac.attends)do
 		wac.duptrunc(wac.dupchk(v,wac.attends),wac.attends)
+		
 		end
-
+		for _,v in pairs(wac.playurns)do
+			local px = minetest.get_player_by_name(v)
+			local pmm = px:get_meta()
+			local sco = pmm:get_int("score")
+			local ind = px:hud_add(wac.scoreshow(px))
+			px:hud_change(ind, text, sco)
+		end
 end
 })
 

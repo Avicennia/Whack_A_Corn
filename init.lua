@@ -11,7 +11,7 @@ end
 minetest.register_on_joinplayer(function(player)
     local n = player:get_player_name()
     table.insert(wac.playurns,n)
-    --minetest.chat_send_all(minetest.serialize(wac.playurns))
+    player:hud_add(wac.scoreshow(player))
 end)
 minetest.register_on_leaveplayer(function(player)
     local nm = player:get_player_name()
@@ -21,9 +21,34 @@ minetest.register_on_leaveplayer(function(player)
             d = n
         end
     end
+    player:hud_remove(1)
     table.remove(wac.playurns,d)
 end)
-minetest.after(3,function()wac.boundchk(wac.playurns)end)
+
+function wac.scoreshow(player)
+	local pl = player
+	local pm = pl:get_meta()
+	local sc = pm:get_int("score")
+local hudscore = 
+{
+    hud_elem_type = "text",
+    position = {x=0.5, y=0.5},
+    name = "score",
+    scale = {x = 2, y = 2},
+    text = sc,
+    number = 1,
+    item = 1,
+    direction = 0,
+    alignment = {x=0, y=0},
+    offset = {x=0, y=0},
+    size = { x=200, y=200 },
+}
+return hudscore
+end
+
+function wac.scoremove(player)
+	player:hud_remove(player:hud_add(wac.scoreshow(player)))
+end
 --
 dofile(modpath.."/framework.lua")
 dofile(modpath.."/schematics.lua")
