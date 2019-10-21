@@ -11,13 +11,6 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function()
-		wac.boundchk(wac.playurns)
-		wac.ttris(wac.attends,wac.boundchk(wac.playurns))
-		minetest.chat_send_all(minetest.serialize(wac.attends))
-		for _,v in pairs(wac.attends)do
-		wac.duptrunc(wac.dupchk(v,wac.attends),wac.attends)
-		
-		end
 		for _,v in pairs(wac.playurns)do
 			local px = minetest.get_player_by_name(v)
 			local pmm = px:get_meta()
