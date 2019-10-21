@@ -6,9 +6,9 @@ local wac = _G[thismod]
 --
 
 minetest.register_abm({
-	label = "indicator",
+	label = "scoreUpdate",
 	nodenames = {thismod .. ":sadistic_eggcorn"},
-	interval = 1.0,
+	interval = 0.5,
 	chance = 1,
 	action = function()
 		for _,v in pairs(wac.playurns)do
@@ -21,18 +21,6 @@ minetest.register_abm({
 		end
 end
 })
-
-minetest.register_abm({
-	label = "Poof away all the mess",
-	nodenames = {"group:eggy"},
-	interval = 2.0,
-	chance = 40,
-	action = function(pos)
-		minetest.remove_node(pos)
-	end
-
-})
-
 
 minetest.register_chatcommand("ckscore",
 	{

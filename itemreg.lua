@@ -1,30 +1,7 @@
 local thismod = minetest.get_current_modname()
 local wac = _G[thismod]
 
-function wac.scoreshow(player)
-	local pl = player
-	local pm = pl:get_meta()
-	local sc = pm:get_int("score")
-local hudscore = 
-{
-    hud_elem_type = "text",
-    position = {x=0.5, y=0.5},
-    name = "score",
-    scale = {x = 20, y = 20},
-    text = sc,
-    number = 1,
-    item = 1,
-    direction = 0,
-    alignment = {x=0, y=0},
-    offset = {x=-40, y=-10},
-    size = { x=200, y=200 },
-}
-return hudscore
-end
 
-function wac.scoremove(player)
-	player:hud_remove(player:hud_add(wac.scoreshow(player)))
-end
 function wac.register_smasher(name, def)
 	def.wac_smasher = true
 
