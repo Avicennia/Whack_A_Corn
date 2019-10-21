@@ -142,10 +142,6 @@ end
 
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
 
-wac.bookban = function()
-
-end
-
 --	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--
 wac.boundchk = function(names)
 	-- ^ Function to check for players that meet criteria to be considered "present" in the play area.

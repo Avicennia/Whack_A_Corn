@@ -75,57 +75,16 @@ minetest.register_node(thismod .. ":smashed_egg", {
 			{0.3125, -0.5, 0, 0.4375, -0.4375, 0.0625}, -- NodeBox10
 		}
 	},
-})
-minetest.register_node(thismod .. ":deaf_glass", {
-    description = "Glass",
-    drawtype = "glasslike_framed",
-    tiles = {"deaf_glass.png", "deaf_glass_detail.png"},
-    inventory_image = minetest.inventorycube("deaf_glass.png"),
-	paramtype = "light",
-	pointable = false,
-    sunlight_propagates = true,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3}
-})
---[[minetest.register_node(thismod .. ":subjugatory_fpost", {
-	tiles = {"nc_tree_tree_side.png"},
-	drawtype = "nodebox",
-	paramtype = "light",
-	connects_to = {thismod .. ":subjugatory_fpost"},
-	connect_sides = { "top", "bottom", "front", "left", "back", "right" },
-	node_box = {
-		type = "connected",
-		fixed = {
-			{-0.0625, -0.5, -0.0625, 0.0625, 0.5875, 0.0625},
-		},
-		connect_back = {-0.0625, -0.1, 0.0625, 0.0625, 0, 0.5},
-		connect_right = {0.0625, -0.1, -0.0625, 0.5, 0, 0.0625},
-		connect_left = {-0.5, -0.1, -0.0625, -0.0625, 0, 0.0625},
-		connect_front = {-0.0625, -0.1, -0.5, 0.0625, 0, -0.0625},
-	}
-})
-]]
-
-minetest.register_node(thismod .. ":dev", {
-		tiles = {
-			"dev_tex.png",
-		},
-		drawtype = "nodebox",
-		paramtype = "light",
-		node_box = {
-			type = "fixed",
-			fixed = {
-				{0, -0.5, 0, 0.0625, 0.5, 0.0625}, -- NodeBox1
-				{-0.0625, -0.5, 0, 0, 0.3125, 0.0625}, -- NodeBox3
-				{-0.0625, -0.5, -0.0625, 0, 0.25, 0}, -- NodeBox4
-				{0, -0.5, -0.0625, 0.0625, 0.4375, 0}, -- NodeBox5
-			}
-		},
-	groups = {cracky=3, stone=1},
-	on_punch = function(pos)
+	on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		timer:start(3)
+	end,
+	on_timer = function(pos)
 		minetest.remove_node(pos)
-		minetest.remove_node({x=pos.x,y=pos.y-1,z=pos.z})
 	end
+
 })
+
 minetest.register_node(thismod .. ":stone",{
 	description = "Stone",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
