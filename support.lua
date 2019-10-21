@@ -8,7 +8,7 @@ local wac = _G[thismod]
 minetest.register_abm({
 	label = "indicator",
 	nodenames = {thismod .. ":sadistic_eggcorn"},
-	interval = 3.0,
+	interval = 1.0,
 	chance = 1,
 	action = function()
 		wac.boundchk(wac.playurns)
@@ -22,8 +22,9 @@ minetest.register_abm({
 			local px = minetest.get_player_by_name(v)
 			local pmm = px:get_meta()
 			local sco = pmm:get_int("score")
-			local ind = px:hud_add(wac.scoreshow(px))
-			px:hud_change(ind, text, sco)
+			
+			px:hud_remove(pmm:get_int("scoretag"))
+			px:hud_add(wac.scoreshow(px))
 		end
 end
 })

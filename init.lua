@@ -11,7 +11,9 @@ end
 minetest.register_on_joinplayer(function(player)
     local n = player:get_player_name()
     table.insert(wac.playurns,n)
-    player:hud_add(wac.scoreshow(player))
+    local lll = player:hud_add(wac.scoreshow(player))
+    local pmeta = player:get_meta()
+    pmeta:set_int("scoretag",lll)
 end)
 minetest.register_on_leaveplayer(function(player)
     local nm = player:get_player_name()
@@ -21,7 +23,9 @@ minetest.register_on_leaveplayer(function(player)
             d = n
         end
     end
-    player:hud_remove(1)
+    for n=1, 100, 1 do
+    player:hud_remove(n)
+    end
     table.remove(wac.playurns,d)
 end)
 
@@ -32,16 +36,16 @@ function wac.scoreshow(player)
 local hudscore = 
 {
     hud_elem_type = "text",
-    position = {x=0.5, y=0.5},
+    position = {x=0.1, y=0.1},
     name = "score",
-    scale = {x = 2, y = 2},
+    scale = {x = 20, y = 20},
     text = sc,
     number = 1,
     item = 1,
     direction = 0,
-    alignment = {x=0, y=0},
+    alignment = {x=1, y=0},
     offset = {x=0, y=0},
-    size = { x=200, y=200 },
+    size = { x=2, y=2},
 }
 return hudscore
 end
