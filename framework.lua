@@ -18,10 +18,6 @@ end
 -- Functions, Variables, and supporting shared references are stored here.
 -- Just for the sake of slightly better separation of components.
 
-wac.array_rand = function(t)
-	math.random(1,#t);math.random(1,#t);local res = math.random(1,#t)
-	return t[res]
-end
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--
 wac.spewparticles = function(pos,tex)
 	minetest.add_particlespawner({

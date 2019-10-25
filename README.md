@@ -1,18 +1,34 @@
 # Whack a Corn
+
 ---
+
 ### What is this?
+
 A Minetest mod designed to add a corny little minigame to Minetest-games.
+
 ### Corny little minigame?
+
 Yes. It is a minigame, and it is very very corny.
+
 ### What the heck is an "Eggcorn"?
+
 A better, more importantly visualized, even more importantly whackable way of referring to an "Oronym". Which is a very highfalutin' word for a word or phrase that is privy to being misinterpreted for something else that is not entirely unrelated to what the originally-intended-but-garbled-in-transmission was trying to convey. Also it's a corn kernel that was born inside of the body(shell?) of an egg, but not really.
+
 ### So how do I get started in this?
+
 You smash, you dash, you mash, you lash, you may even crash... (Use your tools to smash the eggcorns that pop in and out of existence like the stuff that comprises the universe, left click, you'd better be quick.) (Right click operations coming soon!)
 
----
-Right now the project is still mired down beneath layers of incompletedness, with incompetence neatly distributed through and through, you'll have to use those convenient `/give` commands right now. Eventually a more polished and immersive approach to getting started will definitely be implemented.
+#### NodeCore:
 
-eg. `/giveme wac:[toolname]` or rather `/giveme wac:unlimited_rubenwardy` (TBA)
+Place an Eggcorn in the middle of 4 glowing lode prills.  Aside from the prills, the area (a 31x31 square centered on the eggcorn, and 3 layers above) must be cleared of all obstructions.
+
+#### MTG:
+
+_TBD_
+
+---
+
+Right now the project is still mired down beneath layers of incompletedness, with incompetence neatly distributed through and through. Eventually a more polished and immersive approach to getting started will definitely be implemented.
 
 Current Toollist:
 
@@ -33,17 +49,7 @@ Current Eggcorn quirks:
 * Victorious
 * Fruity
 
-Commands: (Imagine that, you actually for once have the power to command something into happening!)
-
-* `/ckattends` -- Supposedly gives a list of all players registered in a game. (WIP)
-* `/ckscore` -- Supposedly checks scores of all players currently in an ongoing game. (WIP)
-* `/score;rs;all` -- Resets the scores of all playing players, regardless of location. (WIP)
-* `/board;stop` -- You use "Taunt" on :Grass_node:! :Grass_node: has fainted!
-* `/board;start` -- :Grass_node: used :Phoenix_down:! (a bit more complicated than that, requires a nearby sadistic eggcorn on a tower of spawned game height, checks 23 node radius all around.)
-
 ---
-
-Starting with a **sadistic_eggcorn** is a good idea; you'll need some of the special minigame tools to fully interact with the whole eggcorn family too.
 
 The **warrhammer** is among the most sturdy, and responsible of all the tools. Enjoy the heft of it in your hands as you smash-and-dash your way around our horribly designed diagonal gameboard. Supposedly nobody knows how it got here, only that they found it hanging in a peculiar fashion in the broom closet with a thumb drive attached to it. The thumb drive conatined only a single text file on it with 3 chars in it (-1,0 and 1).
 

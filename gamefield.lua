@@ -20,8 +20,8 @@ function wac.gamefield_fits(pos, test)
 				if test(x, y, z) then
 					dpos.z = z
 					local p = vector.add(pos, dpos)
-					local node = minetest.get_node(p)
-					if not bt[node.name] then
+					local node = minetest.get_node_or_nil(p)
+					if (not node) or (not bt[node.name]) then
 						return minetest.log(minetest.pos_to_string(p) .. node.name)
 					end
 				end
@@ -32,6 +32,9 @@ function wac.gamefield_fits(pos, test)
 end
 
 function wac.gamefield_create(pos)
+	local now = minetest.get_us_time() / 1000000
+	local wacid = minetest.get_gametime() + now - math.floor(now)
+	minetest.log("new whack-a-corn game " .. wacid .. " at " .. minetest.pos_to_string(pos))
 	local dpos = {}
 	for y = 0, height - 1 do
 		dpos.y = y
@@ -44,8 +47,10 @@ function wac.gamefield_create(pos)
 					minetest.set_node(p, {name = "air"})
 				elseif x == -width or x == width or z == -width or z == width then
 					minetest.set_node(p, {name = thismod .. ":stone"})
+					minetest.get_meta(p):set_float("wac_id", wacid)
 				else
 					minetest.set_node(p, {name = thismod .. ":resigned_grass"})
+					minetest.get_meta(p):set_float("wac_id", wacid)
 				end
 			end
 		end

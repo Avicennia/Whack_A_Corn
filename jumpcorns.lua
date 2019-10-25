@@ -28,8 +28,7 @@ function wac.jump_whack(user, obj)
 		local value = quirk.value or 1
 		if type(value) == "function" then value = value(user, npos) end
 
-		local pmeta = user:get_meta()
-		pmeta:set_int("score", pmeta:get_int("score")+value)
+		wac.player_score(user, wac.player_gameid(user), value)
 		wac.scoreparticles(vector.add(user:get_pos(), user:get_look_dir()), value)
 	end
 

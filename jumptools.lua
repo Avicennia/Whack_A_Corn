@@ -1,5 +1,4 @@
 local thismod = minetest.get_current_modname()
-local wac = _G[thismod]
 
 minetest.register_entity(thismod .. ":jumptool", {
 	on_activate = function(self, data)
