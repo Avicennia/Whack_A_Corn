@@ -1,7 +1,7 @@
 local thismod = minetest.get_current_modname()
 local wac = _G[thismod]
 
-local width = 9
+local width = 15
 local height = 4
 
 function wac.gamefield_fits(pos, test)
