@@ -14,18 +14,22 @@ minetest.register_node(thismod .. ":sadistic_eggcorn",{
 	tiles = {"sadistic_eggcorn.png"},
 	groups = {cracky = 2, eventy = 2},
 	on_rightclick = function(pos)
-		wac.game_create(pos)
-		minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z},
-			{name=thismod .. ":sadistic_eggcorn"})
-		local field = wac.find_nodes(pos, {23, 15, 23}, {23, 0, 23},
-			thismod .. ":resigned_grass")
-		wac_s:set_string("gboard",minetest.serialize(field))
-		minetest.remove_node(pos)
-		for _,v in ipairs(field)do
-			wac.spewparticles(v,"dev_tex.png")
+		if wac.gamefield_fits(pos) then
+			wac.gamefield_create(pos)
 		end
+		-- minetest.place_schematic({x=pos.x-23,y=pos.y,z=pos.z-23},wac.thefield,"0",true)
+		-- minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z},
+		-- 	{name=thismod .. ":sadistic_eggcorn"})
+		-- local field = wac.find_nodes(pos, {23, 15, 23}, {23, 0, 23},
+		-- 	thismod .. ":resigned_grass")
+		-- wac_s:set_string("gboard",minetest.serialize(field))
+		-- minetest.remove_node(pos)
+		-- for _,v in ipairs(field)do
+		-- 	wac.spewparticles(v,"dev_tex.png")
+		-- end
 	end
 })
+
 --Fence: Designates area where the game is conducted.
 minetest.register_node(thismod .. ":fence",{
 	description = "Subjugatory Fence",

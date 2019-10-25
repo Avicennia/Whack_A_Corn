@@ -25,7 +25,6 @@ function wac.register_smasher(name, def)
 				return helper(wac.jump_whack(user, obj))
 			end, pointed_thing.ref)
 		end
-		
 	end
 
 	return minetest.register_craftitem(name, def)
@@ -41,7 +40,8 @@ wac.register_smasher(thismod .. ":warrhammer",{
 	wield_image = "maultest.png",
 	wac_smash_quirk = function(pos)
 		wac.tumbleparticles(pos,"code_warr.png")
-	end
+	end,
+	wac_tool_rarity = 2
 })
 wac.register_smasher(thismod .. ":codex_dimond",{
 	description = "Codex Dimond",
@@ -60,7 +60,8 @@ wac.register_smasher(thismod .. ":codex_dimond",{
 	end,
 	wac_smash_quirk = function(pos)
 		wac.dimond_focused_lazer(pos,"banzer.png")
-	end
+	end,
+	wac_tool_rarity = 5
 })
 wac.register_smasher(thismod .. ":jagged_flint",{
 	description = "Jagged Flint Shard",
@@ -71,13 +72,15 @@ wac.register_smasher(thismod .. ":bec_de_corbin",{
 	description = "Bec_de_Corbin",
 	groups = {metal = 1, event = 2, thwacky = 2},
 	inventory_image = "bdc.png",
-	wield_image = "bdc.png"
+	wield_image = "bdc.png",
+	wac_tool_rarity = 1
 })
 wac.register_smasher(thismod .. ":baseball_bat",{
 	description = "Ol' Reliable",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	inventory_image = "bbat.png",
-	wield_image = "bbat.png"
+	wield_image = "bbat.png",
+	wac_tool_rarity = 1
 })
 wac.register_smasher(thismod .. ":hostwand",{
 	description = "Event Host Wand",
@@ -87,11 +90,13 @@ wac.register_smasher(thismod .. ":vampirewhip",{
     description = "Far Rach",
 	inventory_image = "distancewhip.png",
 	groups = {metal = 1, event = 2, thwacky = 4},
-	range = 8
+	range = 8,
+	wac_tool_rarity = 3
 })
 wac.register_smasher(thismod .. ":paws",{
 	description = "Paws of the Kittypet",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	inventory_image = "trinket_rescue.png",
-	wield_image = "trinket_rescue.png"
+	wield_image = "trinket_rescue.png",
+	wac_tool_rarity = 2
 })
