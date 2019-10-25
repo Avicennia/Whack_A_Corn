@@ -25,7 +25,6 @@ function wac.register_smasher(name, def)
 				return helper(wac.jump_whack(user, obj))
 			end, pointed_thing.ref)
 		end
-		
 	end
 
 	return minetest.register_craftitem(name, def)

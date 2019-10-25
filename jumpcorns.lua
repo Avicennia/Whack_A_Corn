@@ -1,6 +1,45 @@
 local thismod = minetest.get_current_modname()
 local wac = _G[thismod]
 
+
+function wac.jump_smash(lua, obj)
+	obj = obj or lua.object
+	lua.jumpcorn = nil
+	obj:set_properties({
+		textures = {thismod .. ":smashed_egg"},
+		automatic_rotate = 0
+	})
+	obj:set_yaw(0)
+end
+
+function wac.jump_whack(user, obj)
+	local lua = obj and obj.get_luaentity and obj:get_luaentity()
+	local corn = lua and lua.jumpcorn
+	local ndef = corn and minetest.registered_items[corn]
+	local quirk = ndef and ndef.wac_quirk
+	if not quirk then return end
+	local npos = obj:get_pos()
+
+	if user then
+		if ndef.description and nodecore and nodecore.show_touchtip then
+			nodecore.show_touchtip(user, ndef.description)
+		end
+
+		local value = quirk.value or 1
+		if type(value) == "function" then value = value(user, npos) end
+
+		local pmeta = user:get_meta()
+		pmeta:set_int("score", pmeta:get_int("score")+value)
+		wac.scoreparticles(vector.add(user:get_pos(), user:get_look_dir()), value)
+	end
+
+	wac.jump_smash(lua, obj)
+
+	if quirk.fx then quirk.fx(user, npos) end
+
+	return true
+end
+
 minetest.register_entity(thismod .. ":jumpcorn", {
 	on_activate = function(self, data)
 		self.jumpcorn = data
@@ -48,46 +87,18 @@ minetest.register_entity(thismod .. ":jumpcorn", {
 		end
 
 		return self.object:remove()
+	end,
+	on_punch = function(self, puncher)
+		if not puncher or not puncher.is_player
+		or not puncher:is_player() then return end
+
+		local pos = puncher:get_pos()
+		pos.y = pos.y + puncher:get_properties().eye_height
+		if vector.distance(pos, self.object:get_pos()) > 2 then return end
+
+		wac.jump_whack(puncher, self.object)
 	end
 })
-
-function wac.jump_smash(lua, obj)
-	obj = obj or lua.object
-	lua.jumpcorn = nil
-	obj:set_properties({
-		textures = {thismod .. ":smashed_egg"},
-		automatic_rotate = 0
-	})
-	obj:set_yaw(0)
-end
-
-function wac.jump_whack(user, obj)
-	local lua = obj and obj.get_luaentity and obj:get_luaentity()
-	local corn = lua and lua.jumpcorn
-	local ndef = corn and minetest.registered_items[corn]
-	local quirk = ndef and ndef.wac_quirk
-	if not quirk then return end
-	local npos = obj:get_pos()
-
-	if user then
-		if ndef.description and nodecore and nodecore.show_touchtip then
-			nodecore.show_touchtip(user, ndef.description)
-		end
-
-		local value = quirk.value or 1
-		if type(value) == "function" then value = value(user, npos) end
-
-		local pmeta = user:get_meta()
-		pmeta:set_int("score", pmeta:get_int("score")+value)
-		wac.scoreparticles(vector.add(user:get_pos(), user:get_look_dir()), value)
-	end
-
-	wac.jump_smash(lua, obj)
-
-	if quirk.fx then quirk.fx(user, npos) end
-
-	return true
-end
 
 function wac.find_corns(pos, radius, each, ...)
 	for _, obj in pairs(minetest.get_objects_inside_radius(pos, radius)) do
