@@ -4,9 +4,6 @@ local wac = {}
 rawset(_G, thismod, wac)
 wac.playurns = {}
 wac.attends = {}
-wac.game_create = function(pos)
-    minetest.place_schematic({x=pos.x-23,y=pos.y,z=pos.z-23},wac.thefield,"0",true)
-end
 
 minetest.register_on_joinplayer(function(player)
     local n = player:get_player_name()
@@ -64,3 +61,4 @@ dofile(modpath.."/tempnodes.lua")
 dofile(modpath.."/quirkcorns.lua")
 dofile(modpath.."/jumpcorns.lua")
 dofile(modpath.."/portability.lua")
+dofile(modpath.."/gamefield.lua")
