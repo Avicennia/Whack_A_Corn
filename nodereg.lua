@@ -5,28 +5,16 @@ local wac = _G[thismod]
 --
 --
 
-local wac_s = minetest.get_mod_storage()
-
 --Sadistic eggcorn God: Game starting node
 minetest.register_node(thismod .. ":sadistic_eggcorn",{
 	description = "Sadistic Eggcorn",
 	drawtype = "plantlike",
 	tiles = {"sadistic_eggcorn.png"},
-	groups = {cracky = 2, eventy = 2},
+	groups = {cracky = 2, eventy = 2, wac_check = 1},
 	on_rightclick = function(pos)
 		if wac.gamefield_fits(pos) then
 			wac.gamefield_create(pos)
 		end
-		-- minetest.place_schematic({x=pos.x-23,y=pos.y,z=pos.z-23},wac.thefield,"0",true)
-		-- minetest.set_node({x=pos.x,y=pos.y+15,z=pos.z},
-		-- 	{name=thismod .. ":sadistic_eggcorn"})
-		-- local field = wac.find_nodes(pos, {23, 15, 23}, {23, 0, 23},
-		-- 	thismod .. ":resigned_grass")
-		-- wac_s:set_string("gboard",minetest.serialize(field))
-		-- minetest.remove_node(pos)
-		-- for _,v in ipairs(field)do
-		-- 	wac.spewparticles(v,"dev_tex.png")
-		-- end
 	end
 })
 
@@ -34,7 +22,7 @@ minetest.register_node(thismod .. ":sadistic_eggcorn",{
 minetest.register_node(thismod .. ":fence",{
 	description = "Subjugatory Fence",
 	tiles = {"stone.png"},
-	groups = {choppy = 3},
+	groups = {choppy = 3, wac_check = 1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	node_box = {
@@ -46,7 +34,7 @@ minetest.register_node(thismod .. ":fence",{
 })
 minetest.register_node(thismod .. ":resigned_grass",{
 	description = "Resigned Grass",
-	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
+	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, wac_check = 1},
 	tiles = {
 		"resigned_grass_top.png",
 		"stone.png",
@@ -56,7 +44,7 @@ minetest.register_node(thismod .. ":resigned_grass",{
 })
 minetest.register_node(thismod .. ":resigned_grass_inert",{
 	description = "Resigned Grass",
-	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, pseudoeggy = 2},
+	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, pseudoeggy = 2, wac_check = 1},
 	tiles = {"resigned_grass_top.png"},
 })
 minetest.register_node(thismod .. ":smashed_egg", {
@@ -91,6 +79,20 @@ minetest.register_node(thismod .. ":smashed_egg", {
 
 minetest.register_node(thismod .. ":stone",{
 	description = "Stone",
-	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2},
+	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, wac_check = 1},
 	tiles = {"stone.png"},
+})
+
+minetest.register_abm({
+	label = "Clean up old games",
+	nodenames = {"group:wac_check"},
+	interval = 10,
+	chance = 1,
+	action = function(pos)
+		local id = minetest.get_meta(pos):get_float("wac_id")
+		if (not id) or (id == 0) then
+			return minetest.after(math.random() * 10,
+			function() return minetest.remove_node(pos) end)
+		end
+	end
 })
