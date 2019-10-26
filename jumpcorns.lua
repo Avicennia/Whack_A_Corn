@@ -7,6 +7,7 @@ function wac.jump_smash(lua, obj)
 	lua.jumpcorn = nil
 	obj:set_properties({
 		textures = {thismod .. ":smashed_egg"},
+		collisionbox = {0, 0, 0, 0, 0, 0},
 		automatic_rotate = 0
 	})
 	obj:set_yaw(0)
@@ -72,7 +73,7 @@ minetest.register_entity(thismod .. ":jumpcorn", {
 		if vel.y > 0 then return end
 
 		local pos = self.object:get_pos()
-		if self.jumpcorn then pos.y = pos.y + 0.5 end
+		if self.jumpcorn then pos.y = pos.y + 0.75 end
 		local node = minetest.get_node(pos)
 		local def = minetest.registered_nodes[node.name]
 		if def and not def.walkable then return end
