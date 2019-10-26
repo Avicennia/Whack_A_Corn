@@ -59,6 +59,8 @@ minetest.register_abm({
 	interval = 1,
 	chance = 2000,
 	action = function(pos)
+		pos.x = pos.x + math.random() - 0.5
+		pos.z = pos.z + math.random() - 0.5
 		return wac.pickrand(
 			minetest.registered_items,
 			function(_, v) return v.wac_tool_rarity end,

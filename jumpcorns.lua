@@ -113,6 +113,8 @@ minetest.register_abm({
 	interval = 1,
 	chance = 100,
 	action = function(pos)
+		pos.x = pos.x + math.random() - 0.5
+		pos.z = pos.z + math.random() - 0.5
 		return wac.pickrand(
 			minetest.registered_items,
 			function(_, v) return v.wac_quirk and v.wac_quirk.rarity end,
