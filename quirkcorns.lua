@@ -75,3 +75,31 @@ wac.register_quirk("fruity", {
 		return math.random(1, 6)
 	end
 })
+
+wac.register_quirk("sadistic", {
+	value = function()
+		return math.random(1, 20)
+	end,
+	fx = function(player)
+		local pname = player:get_player_name()
+		minetest.after(0.25, function()
+			player = minetest.get_player_by_name(pname)
+			if not player then return end
+			local pos = player:get_pos()
+			pos.y = pos.y + player:get_properties().eye_height
+			local inv = player:get_inventory()
+			for i = 1, inv:get_size("main") do
+				local stack = inv:get_stack("main", i)
+				inv:set_stack("main", i, ItemStack(""))
+				if not stack:is_empty() then
+					local obj = minetest.add_item(pos, stack)
+					if obj then obj:set_velocity({
+						x = (math.random() - 0.5) * 10,
+						y = math.random() * 10,
+						z = (math.random() - 0.5) * 10,
+					}) end
+				end
+			end
+		end)
+	end
+})
