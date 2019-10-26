@@ -4,6 +4,7 @@ local wac = _G[thismod]
 
 function wac.register_smasher(name, def)
 	def.wac_smasher = true
+	def.stack_max = 1
 
 	def.inventory_image = def.inventory_image or ("wac_tool_" .. name .. ".png")
 
