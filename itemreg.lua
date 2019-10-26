@@ -4,6 +4,9 @@ local wac = _G[thismod]
 
 function wac.register_smasher(name, def)
 	def.wac_smasher = true
+	def.stack_max = 1
+
+	def.inventory_image = def.inventory_image or ("wac_tool_" .. name .. ".png")
 
 	def.wac_smash_targets = def.wac_smash_targets
 	or function(func, lua, obj) return func(lua, obj) end
@@ -27,27 +30,25 @@ function wac.register_smasher(name, def)
 		end
 	end
 
-	return minetest.register_craftitem(name, def)
+	return minetest.register_craftitem(thismod .. ":" .. name, def)
 end
 
 --
 --
 --
-wac.register_smasher(thismod .. ":warrhammer",{
+
+wac.register_smasher("warrhammer", {
 	description = "Warr Hammer",
 	groups = {metal = 1, thwacky = 2},
-	inventory_image = "maultest.png",
-	wield_image = "maultest.png",
 	wac_smash_quirk = function(pos)
-		wac.tumbleparticles(pos,"code_warr.png")
+		wac.tumbleparticles(pos,"wac_fx_warrcode.png")
 	end,
 	wac_tool_rarity = 2
 })
-wac.register_smasher(thismod .. ":codex_dimond",{
+
+wac.register_smasher("codex_dimond", {
 	description = "Codex Dimond",
 	groups = {metal = 1, thwacky = 2},
-	inventory_image = "dimondomicon.png",
-	wield_image = "dimondomicon.png",
 	wac_smash_targets = function(func, obj)
 		if not func(obj) then return end
 		local delrad = {}
@@ -59,44 +60,50 @@ wac.register_smasher(thismod .. ":codex_dimond",{
 		func(pick)
 	end,
 	wac_smash_quirk = function(pos)
-		wac.dimond_focused_lazer(pos,"banzer.png")
+		wac.dimond_focused_lazer(pos,"wac_fx_banzer.png")
 	end,
 	wac_tool_rarity = 5
 })
-wac.register_smasher(thismod .. ":jagged_flint",{
-	description = "Jagged Flint Shard",
-	groups = {metal = 1, event = 2, thwacky = 3},
-	inventory_image = "flint.png"
-})
-wac.register_smasher(thismod .. ":bec_de_corbin",{
+
+wac.register_smasher("bec_de_corbin", {
 	description = "Bec_de_Corbin",
 	groups = {metal = 1, event = 2, thwacky = 2},
-	inventory_image = "bdc.png",
-	wield_image = "bdc.png",
 	wac_tool_rarity = 1
 })
-wac.register_smasher(thismod .. ":baseball_bat",{
+
+wac.register_smasher("baseball_bat",{
 	description = "Ol' Reliable",
 	groups = {metal = 1, event = 2, thwacky = 3},
-	inventory_image = "bbat.png",
-	wield_image = "bbat.png",
 	wac_tool_rarity = 1
 })
-wac.register_smasher(thismod .. ":hostwand",{
-	description = "Event Host Wand",
-	inventory_image = "hostwand.png"
-})
-wac.register_smasher(thismod .. ":vampirewhip",{
+
+wac.register_smasher("vampirewhip",{
     description = "Far Rach",
-	inventory_image = "distancewhip.png",
 	groups = {metal = 1, event = 2, thwacky = 4},
 	range = 8,
 	wac_tool_rarity = 3
 })
-wac.register_smasher(thismod .. ":paws",{
+
+wac.register_smasher("paws",{
 	description = "Paws of the Kittypet",
 	groups = {metal = 1, event = 2, thwacky = 3},
-	inventory_image = "trinket_rescue.png",
-	wield_image = "trinket_rescue.png",
 	wac_tool_rarity = 2
+})
+
+wac.register_smasher("suchion_cup",{
+	description = "Suchion Cup",
+	groups = {metal = 1, event = 2, thwacky = 3},
+	wac_tool_rarity = 4,
+	wac_smash_quirk = function(pos)
+		wac.find_corns(pos, 10, function(_, obj)
+			local rel = vector.subtract(pos, obj:get_pos())
+			local len = vector.length(rel)
+			if len > 0 then
+				rel = vector.multiply(rel, 250
+					* math.random() * math.random()
+					/ len / len / len)
+				obj:add_velocity(rel)
+			end
+		end)
+	end,
 })

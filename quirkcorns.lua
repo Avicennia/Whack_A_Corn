@@ -7,7 +7,7 @@ function wac.register_quirk(name, def)
 	def = def or {}
 	local desc = def.description or (name:sub(1, 1):upper()
 		.. name:sub(2) .. " Eggcorn")
-	local tile = def.tile or (name .. "_eggcorn.png")
+	local tile = def.tile or ("wac_corn_" .. name .. ".png")
 	wac.quirks[#wac.quirks + 1] = name
 
 	minetest.register_craftitem(thismod .. ":" .. name .. "_eggcorn", {
@@ -18,10 +18,11 @@ function wac.register_quirk(name, def)
 end
 
 wac.register_quirk("simple", {
-	tile = "nc_tree_eggcorn.png"
+	rarity = 1
 })
 
 wac.register_quirk("melancholy", {
+	rarity = 1.75,
 	value = 2,
 	fx = function(player)
 		if not player then return end
@@ -34,9 +35,13 @@ wac.register_quirk("melancholy", {
 	end
 })
 
-wac.register_quirk("cheerful", { value = 2 })
+wac.register_quirk("cheerful", {
+	rarity = 2,
+	value = 2
+})
 
 wac.register_quirk("petrified", {
+	rarity = 1.5,
 	value = 2,
 	fx = function(player)
 		if not player then return end
@@ -54,14 +59,15 @@ wac.register_quirk("petrified", {
 })
 
 wac.register_quirk("myscus", {
+	wac_corn_rarity = 1,
 	fx = function(_, npos)
 		wac.find_corns(npos, 8, wac.jump_smash)
 	end
 })
 
 wac.register_quirk("victorious", {
+	rarity = 3,
 	value = 4,
-	tile = "triumphant_eggcorn.png",
 	tick = function (self)
 		local obj = self.object
 		wac.find_corns(obj:get_pos(), 2, function(lua, pobj)
@@ -71,7 +77,37 @@ wac.register_quirk("victorious", {
 })
 
 wac.register_quirk("fruity", {
+	rarity = 3,
 	value = function()
 		return math.random(1, 6)
+	end
+})
+
+wac.register_quirk("sadistic", {
+	rarity = 7,
+	value = function()
+		return math.random(1, 20)
+	end,
+	fx = function(player)
+		local pname = player:get_player_name()
+		minetest.after(0.25, function()
+			player = minetest.get_player_by_name(pname)
+			if not player then return end
+			local pos = player:get_pos()
+			pos.y = pos.y + player:get_properties().eye_height
+			local inv = player:get_inventory()
+			for i = 1, inv:get_size("main") do
+				local stack = inv:get_stack("main", i)
+				inv:set_stack("main", i, ItemStack(""))
+				if not stack:is_empty() then
+					local obj = minetest.add_item(pos, stack)
+					if obj then obj:set_velocity({
+						x = (math.random() - 0.5) * 10,
+						y = math.random() * 10,
+						z = (math.random() - 0.5) * 10,
+					}) end
+				end
+			end
+		end)
 	end
 })

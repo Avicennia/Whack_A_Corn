@@ -58,23 +58,5 @@ minetest.register_abm({
 	nodenames = {"wac:resigned_grass"},
 	interval = 1,
 	chance = 2000,
-	action = function(pos)
-		local total = 0
-		local items = {}
-		for name, def in pairs(minetest.registered_items) do
-			if def.wac_tool_rarity then
-				local q = 1 / def.wac_tool_rarity
-				total = total + q
-				items[#items + 1] = {n = name, q = q}
-			end
-		end
-		total = total * math.random()
-		for _, def in pairs(items) do
-			total = total - def.q
-			if total <= 0 then
-				return minetest.add_entity(pos,
-					thismod .. ":jumptool", def.n)
-			end
-		end
-	end
+	action = wac.jumpspawner("jumptool", function(_, v) return v.wac_tool_rarity end)
 })
