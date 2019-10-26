@@ -112,15 +112,5 @@ minetest.register_abm({
 	nodenames = {"wac:resigned_grass"},
 	interval = 1,
 	chance = 100,
-	action = function(pos)
-		pos.x = pos.x + math.random() - 0.5
-		pos.z = pos.z + math.random() - 0.5
-		return wac.pickrand(
-			minetest.registered_items,
-			function(_, v) return v.wac_quirk and v.wac_quirk.rarity end,
-			function(name)
-				return minetest.add_entity(pos, thismod .. ":jumpcorn", name)
-			end
-		)
-	end
+	action = wac.jumpspawner("jumpcorn", function(_, v) return v.wac_quirk and v.wac_quirk.rarity end)
 })

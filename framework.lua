@@ -44,6 +44,22 @@ wac.pickrand = function (list, rarityfunc, picked)
 	end
 end
 
+wac.jumpspawner = function(entname, rarefunc)
+	return function(pos)
+		return minetest.after(math.random(), function()
+			pos.x = pos.x + math.random() - 0.5
+			pos.z = pos.z + math.random() - 0.5
+			return wac.pickrand(
+				minetest.registered_items, rarefunc,
+				function(name)
+					return minetest.add_entity(pos,
+					thismod .. ":" .. entname, name)
+				end
+			)
+		end)
+	end
+end
+
 -- Functions, Variables, and supporting shared references are stored here.
 -- Just for the sake of slightly better separation of components.
 
