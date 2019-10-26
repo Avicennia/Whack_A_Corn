@@ -35,6 +35,7 @@ end
 --
 --
 --
+
 wac.register_smasher("warrhammer", {
 	description = "Warr Hammer",
 	groups = {metal = 1, thwacky = 2},
@@ -43,6 +44,7 @@ wac.register_smasher("warrhammer", {
 	end,
 	wac_tool_rarity = 2
 })
+
 wac.register_smasher("codex_dimond", {
 	description = "Codex Dimond",
 	groups = {metal = 1, thwacky = 2},
@@ -61,28 +63,44 @@ wac.register_smasher("codex_dimond", {
 	end,
 	wac_tool_rarity = 5
 })
-wac.register_smasher("jagged_flint", {
-	description = "Jagged Flint Shard",
-	groups = {metal = 1, event = 2, thwacky = 3}
-})
+
 wac.register_smasher("bec_de_corbin", {
 	description = "Bec_de_Corbin",
 	groups = {metal = 1, event = 2, thwacky = 2},
 	wac_tool_rarity = 1
 })
+
 wac.register_smasher("baseball_bat",{
 	description = "Ol' Reliable",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	wac_tool_rarity = 1
 })
+
 wac.register_smasher("vampirewhip",{
     description = "Far Rach",
 	groups = {metal = 1, event = 2, thwacky = 4},
 	range = 8,
 	wac_tool_rarity = 3
 })
+
 wac.register_smasher("paws",{
 	description = "Paws of the Kittypet",
 	groups = {metal = 1, event = 2, thwacky = 3},
 	wac_tool_rarity = 2
+})
+
+wac.register_smasher("suchion_cup",{
+	description = "Suchion Cup",
+	groups = {metal = 1, event = 2, thwacky = 3},
+	wac_tool_rarity = 3,
+	wac_smash_quirk = function(pos)
+		wac.find_corns(pos, 10, function(_, obj)
+			local rel = vector.subtract(pos, obj:get_pos())
+			local len = vector.length(rel)
+			if len > 0 then
+				rel = vector.multiply(rel, 250 / len / len / len)
+				obj:add_velocity(rel)
+			end
+		end)
+	end,
 })
