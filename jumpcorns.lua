@@ -113,10 +113,12 @@ minetest.register_abm({
 	interval = 1,
 	chance = 100,
 	action = function(pos)
-		return minetest.after(math.random(), function()
-			return minetest.add_entity(pos, thismod .. ":jumpcorn",
-				thismod .. ":" .. wac.quirks[math.random(1, #wac.quirks)]
-				.. "_eggcorn")
-		end)
+		return wac.pickrand(
+			minetest.registered_items,
+			function(_, v) return v.wac_quirk and v.wac_quirk.rarity end,
+			function(name)
+				return minetest.add_entity(pos, thismod .. ":jumpcorn", name)
+			end
+		)
 	end
 })

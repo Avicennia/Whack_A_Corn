@@ -15,6 +15,25 @@ wac.find_nodes = function(pos, min, max, ...)
 	return minetest.find_nodes_in_area(min, max, ...)
 end
 
+wac.pickrand = function (list, rarityfunc, picked)
+	local total = 0
+	local items = {}
+	for k, v in pairs(list) do
+		local r = rarityfunc(k, v)
+		if r and r > 0 then
+			total = total + 1 / r
+			items[#items + 1] = {k = k, v = v, p = 1 / r}
+		end
+	end
+	total = total * math.random()
+	for _, x in pairs(items) do
+		total = total - x.p
+		if total <= 0 then
+			return picked(x.k, x.v, x.p)
+		end
+	end
+end
+
 -- Functions, Variables, and supporting shared references are stored here.
 -- Just for the sake of slightly better separation of components.
 
@@ -137,7 +156,3 @@ wac.anynode = function(...)
 end
 
 --	--	--	--	--	--	PARTICLES	--	--	--	--	--	--	^^
-
---	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--
-
---	--	--	--	--	--	PLAYER RECOGNITION	--	--	--	--	--	--

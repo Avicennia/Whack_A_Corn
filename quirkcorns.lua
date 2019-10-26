@@ -18,10 +18,12 @@ function wac.register_quirk(name, def)
 end
 
 wac.register_quirk("simple", {
+	rarity = 1,
 	tile = "nc_tree_eggcorn.png"
 })
 
 wac.register_quirk("melancholy", {
+	rarity = 1.75,
 	value = 2,
 	fx = function(player)
 		if not player then return end
@@ -34,9 +36,13 @@ wac.register_quirk("melancholy", {
 	end
 })
 
-wac.register_quirk("cheerful", { value = 2 })
+wac.register_quirk("cheerful", {
+	rarity = 2,
+	value = 2
+})
 
 wac.register_quirk("petrified", {
+	rarity = 1.5,
 	value = 2,
 	fx = function(player)
 		if not player then return end
@@ -54,12 +60,14 @@ wac.register_quirk("petrified", {
 })
 
 wac.register_quirk("myscus", {
+	wac_corn_rarity = 1,
 	fx = function(_, npos)
 		wac.find_corns(npos, 8, wac.jump_smash)
 	end
 })
 
 wac.register_quirk("victorious", {
+	rarity = 3,
 	value = 4,
 	tile = "triumphant_eggcorn.png",
 	tick = function (self)
@@ -71,12 +79,14 @@ wac.register_quirk("victorious", {
 })
 
 wac.register_quirk("fruity", {
+	rarity = 3,
 	value = function()
 		return math.random(1, 6)
 	end
 })
 
 wac.register_quirk("sadistic", {
+	rarity = 7,
 	value = function()
 		return math.random(1, 20)
 	end,
