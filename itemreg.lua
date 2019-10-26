@@ -92,13 +92,15 @@ wac.register_smasher("paws",{
 wac.register_smasher("suchion_cup",{
 	description = "Suchion Cup",
 	groups = {metal = 1, event = 2, thwacky = 3},
-	wac_tool_rarity = 3,
+	wac_tool_rarity = 4,
 	wac_smash_quirk = function(pos)
 		wac.find_corns(pos, 10, function(_, obj)
 			local rel = vector.subtract(pos, obj:get_pos())
 			local len = vector.length(rel)
 			if len > 0 then
-				rel = vector.multiply(rel, 250 / len / len / len)
+				rel = vector.multiply(rel, 250
+					* math.random() * math.random()
+					/ len / len / len)
 				obj:add_velocity(rel)
 			end
 		end)
