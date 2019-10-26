@@ -1,37 +1,5 @@
 local thismod = minetest.get_current_modname()
-local wac = _G[thismod]
 
---
---
---
-
---Sadistic eggcorn God: Game starting node
-minetest.register_node(thismod .. ":sadistic_eggcorn",{
-	description = "Sadistic Eggcorn",
-	drawtype = "plantlike",
-	tiles = {"sadistic_eggcorn.png"},
-	groups = {cracky = 2, eventy = 2, wac_check = 1},
-	on_rightclick = function(pos)
-		if wac.gamefield_fits(pos) then
-			wac.gamefield_create(pos)
-		end
-	end
-})
-
---Fence: Designates area where the game is conducted.
-minetest.register_node(thismod .. ":fence",{
-	description = "Subjugatory Fence",
-	tiles = {"stone.png"},
-	groups = {choppy = 3, wac_check = 1},
-	drawtype = "nodebox",
-	paramtype = "light",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.125, -0.5, -0.125, 0.125, 0.5, 0.125}, -- NodeBox1
-		}
-	}
-})
 minetest.register_node(thismod .. ":resigned_grass",{
 	description = "Resigned Grass",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, wac_check = 1},
@@ -42,11 +10,7 @@ minetest.register_node(thismod .. ":resigned_grass",{
 	},
 	sounds = {footstep = {name = "resignedgrasswalk"}}
 })
-minetest.register_node(thismod .. ":resigned_grass_inert",{
-	description = "Resigned Grass",
-	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, pseudoeggy = 2, wac_check = 1},
-	tiles = {"resigned_grass_top.png"},
-})
+
 minetest.register_node(thismod .. ":smashed_egg", {
 	description = "Smashed Eggcorn",
 	groups = {choppy = 1, eggy = 2, falling_node = 1},
