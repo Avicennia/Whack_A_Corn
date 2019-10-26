@@ -54,6 +54,7 @@ minetest.register_node(thismod .. ":smashed_egg", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
 	node_box = {
 		type = "fixed",
 		fixed = {
