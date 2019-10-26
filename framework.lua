@@ -80,7 +80,7 @@ wac.dimond_focused_lazer = function(pos,tex)
 			texture = tex,
 			glow = 2
 		})
-		minetest.sound_play({name ="lbeam"},{
+		minetest.sound_play({name ="wac_lbeam"},{
 			pos = pos,
 			gain = 50.0, -- default
 			max_hear_distance = 32,
@@ -88,7 +88,7 @@ wac.dimond_focused_lazer = function(pos,tex)
 	end
 end
 wac.warr_ham = function(pos)
-	minetest.sound_play({name ="warrhammerwave"},{
+	minetest.sound_play({name ="wac_warrhammerwave"},{
 		pos = pos,
 		gain = 50.0, -- default
 		max_hear_distance = 32,})
@@ -122,7 +122,7 @@ wac.scoreparticles = function(pos, score)
 	for i = 0, #score do
 		local j = (i == 0) and 0 or (tonumber(score:sub(i, i)) + 1)
 		txr = txr .. ":" .. (i * 8) .. "," .. (#score * 3)
-			.. "=wac_numeric.png\\^[verticalframe\\:11\\:" .. j
+			.. "=wac_fx_numeric.png\\^[verticalframe\\:11\\:" .. j
 	end
 	minetest.add_particlespawner({
 		amount = 25,

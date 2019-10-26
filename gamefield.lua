@@ -71,7 +71,7 @@ function wac.gamefield_create(pos)
 		collisiondetection = false,
 		collision_removal = false,
 		vertical = false,
-		texture = "dev_tex.png",
+		texture = "wac_fx_devspike.png",
 		glow = 2
 	})
 end

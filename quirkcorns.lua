@@ -7,7 +7,7 @@ function wac.register_quirk(name, def)
 	def = def or {}
 	local desc = def.description or (name:sub(1, 1):upper()
 		.. name:sub(2) .. " Eggcorn")
-	local tile = def.tile or (name .. "_eggcorn.png")
+	local tile = def.tile or ("wac_corn_" .. name .. ".png")
 	wac.quirks[#wac.quirks + 1] = name
 
 	minetest.register_craftitem(thismod .. ":" .. name .. "_eggcorn", {
@@ -18,8 +18,7 @@ function wac.register_quirk(name, def)
 end
 
 wac.register_quirk("simple", {
-	rarity = 1,
-	tile = "nc_tree_eggcorn.png"
+	rarity = 1
 })
 
 wac.register_quirk("melancholy", {
@@ -69,7 +68,6 @@ wac.register_quirk("myscus", {
 wac.register_quirk("victorious", {
 	rarity = 3,
 	value = 4,
-	tile = "triumphant_eggcorn.png",
 	tick = function (self)
 		local obj = self.object
 		wac.find_corns(obj:get_pos(), 2, function(lua, pobj)

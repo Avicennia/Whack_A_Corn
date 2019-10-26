@@ -4,17 +4,17 @@ minetest.register_node(thismod .. ":resigned_grass",{
 	description = "Resigned Grass",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, wac_check = 1},
 	tiles = {
-		"resigned_grass_top.png",
-		"stone.png",
-		"resigned_grass_overlay.png"
+		"wac_node_resigned_grass_top.png",
+		"wac_node_resigned_dirt.png",
+		"wac_node_resigned_dirt.png^wac_node_resigned_grass_overlay.png"
 	},
-	sounds = {footstep = {name = "resignedgrasswalk"}}
+	sounds = {footstep = {name = "wac_resignedgrasswalk"}}
 })
 
 minetest.register_node(thismod .. ":smashed_egg", {
 	description = "Smashed Eggcorn",
 	groups = {choppy = 1, eggy = 2, falling_node = 1},
-	tiles = {"hashed_eggcorn.png"},
+	tiles = {"wac_node_eggcorn_hashed.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	walkable = false,
@@ -45,7 +45,7 @@ minetest.register_node(thismod .. ":smashed_egg", {
 minetest.register_node(thismod .. ":stone",{
 	description = "Stone",
 	groups = {crumbly = 2, event = 2, oddly_breakable_by_hand = 2, wac_check = 1},
-	tiles = {"stone.png"},
+	tiles = {"wac_node_stone.png"},
 })
 
 minetest.register_abm({
